@@ -259,6 +259,10 @@ footer{background:var(--navy);color:#c9ceff;font-size:.85rem;padding:18px 0}
 .hero .wrap > div:first-child > :nth-child(6){animation-delay:.40s}
 .stat{animation:rise .8s both}
 .stat:nth-child(1){animation-delay:.45s}.stat:nth-child(2){animation-delay:.55s}.stat:nth-child(3){animation-delay:.65s}.stat:nth-child(4){animation-delay:.75s}
+.interests{margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.int-label{font-size:.82rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#c9ceff}
+.int-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.int-list li{font-size:.88rem;font-weight:600;color:#fff;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3)}
 .rotline{margin-top:10px;font-size:1.05rem;color:#d6daff;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
 .rot{display:inline-block;font-weight:700;color:#fff;border-bottom:2px solid #ffbe6e;transition:opacity .35s,transform .35s}
 .rot.out{opacity:0;transform:translateY(-10px)}
@@ -319,7 +323,7 @@ footer{background:var(--navy);color:#c9ceff;font-size:.85rem;padding:18px 0}
       <span class="hbadge">MSc, Distinction · Imperial College London</span>
       <h1>Prahalad Krishnakumar</h1>
       <p class="tagline">I compare how humans and animals respond to disease at the level of gene expression. My MSc thesis matched blood transcriptomes from children with MIS-C and cats with FIP to find the inflammatory programmes the two species share.</p>
-      <p class="rotline">Research interests: <span class="rot" id="rot" aria-live="off">gene regulation</span></p>
+      <div class="interests"><span class="int-label">Research interests</span><ul class="int-list"><li>Gene regulation</li><li>Disease mechanisms</li><li>Translational genetics</li><li>Comparative transcriptomics</li></ul></div>
       <div class="ctas">
         <a class="btn solid" href="#thesis">Explore my thesis</a>
         <a class="btn ghost" href="#projects">See all projects</a>
@@ -832,11 +836,6 @@ footer{background:var(--navy);color:#c9ceff;font-size:.85rem;padding:18px 0}
   function onScroll(){var h=document.documentElement;navEl.classList.toggle('scrolled',h.scrollTop>10);var max=h.scrollHeight-h.clientHeight,p=max>0?h.scrollTop/max:0;bar.style.transform='scaleX('+p+')';top.classList.toggle('show',h.scrollTop>700);}
   window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
   top.addEventListener('click',function(){window.scrollTo({top:0,behavior:reduce?'auto':'smooth'})});
-
-  /* rotating interests */
-  var words=['gene regulation','disease mechanisms','translational genetics','comparative transcriptomics'], wi=0, rot=document.getElementById('rot');
-  if(!reduce){setInterval(function(){rot.classList.add('out');setTimeout(function(){wi=(wi+1)%words.length;rot.textContent=words[wi];rot.classList.remove('out');},350);},2600);}
-  else{rot.textContent=words.slice(0,3).join(', ');}
 
   /* scroll reveal: only for things below the first screen, so the first frame is complete */
   document.querySelectorAll('.sg .chips-inline').forEach(function(g){[].forEach.call(g.children,function(c,i){c.style.setProperty('--i',i)})});
