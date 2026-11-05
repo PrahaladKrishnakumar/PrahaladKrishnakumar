@@ -1,0 +1,74 @@
+/* text-effects.css — text transitions for the portfolio.
+   Every effect starts from the visible, finished state; JS only adds classes
+   that replay the motion. With reduced motion or print, text simply shows. */
+
+:root{
+  --te-ease:cubic-bezier(.22,1,.36,1);
+  --te-hl:rgba(255,255,255,.2);        /* soft white glow on blue */
+  --te-hl-light:rgba(0,0,205,.14);     /* highlighter on white */
+}
+
+/* 1. Name: letters rise out of a soft blur, one after another */
+.te-letters{display:inline}
+.te-letters .wd{display:inline-block;white-space:nowrap}
+.te-letters .ch{display:inline-block;white-space:pre;will-change:transform,opacity,filter}
+.te-letters.play .ch{animation:teLetter .9s var(--te-ease) both;animation-delay:calc(var(--i) * 32ms + 120ms)}
+@keyframes teLetter{
+  from{opacity:0;transform:translateY(.55em) rotate(6deg);filter:blur(8px)}
+  to{opacity:1;transform:none;filter:none}
+}
+/* after the letters land, a wave of light passes through the name */
+.te-letters.play .ch{animation:teLetter .9s var(--te-ease) both,teWave 1.1s ease-in-out both;animation-delay:calc(var(--i) * 32ms + 120ms),calc(var(--i) * 45ms + 1300ms)}
+@keyframes teWave{0%,100%{color:#fff;text-shadow:none}45%{color:#ffd9a8;text-shadow:0 0 18px rgba(255,190,110,.65)}}
+
+/* 2. Section headings: words slide up from a mask as the section comes into view */
+.te-words .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em;margin-bottom:-.08em}
+.te-words .w > span{display:inline-block}
+.te-words.wait .w > span{transform:translateY(105%);opacity:0}
+.te-words.play .w > span{animation:teWord .85s var(--te-ease) both;animation-delay:calc(var(--i) * 55ms)}
+@keyframes teWord{from{transform:translateY(105%);opacity:0}to{transform:none;opacity:1}}
+
+/* 3. Eyebrow labels: wipe in from the left, like a scanner line */
+.eyebrow.te-wipe.wait{clip-path:inset(0 100% 0 0)}
+.eyebrow.te-wipe.play{animation:teWipe 1s var(--te-ease) both}
+@keyframes teWipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+
+/* 4. Key phrases: a highlighter stroke sweeps under them */
+mark.hl{color:inherit;background:linear-gradient(var(--te-hl-light),var(--te-hl-light)) no-repeat 0 88%/100% .42em;padding:0 .08em;border-radius:2px}
+.hero mark.hl{background-image:linear-gradient(var(--te-hl),var(--te-hl));background-position:0 60%;background-size:100% 1.05em;padding:0 .18em;border-radius:5px;font-weight:700;color:#fff;box-shadow:0 0 18px rgba(255,255,255,.08)}
+.hero mark.hl.wait{background-size:0% 1.05em}
+.hero mark.hl.play{background-size:100% 1.05em}
+mark.hl.wait{background-size:0% .42em}
+mark.hl.play{transition:background-size 1.1s var(--te-ease);transition-delay:var(--d,0ms);background-size:100% .42em}
+
+/* 5. Big numbers: a light glint passes over them once they have counted up */
+.stat b,.big,.donut text{position:relative}
+.stat b.te-glint{background:linear-gradient(110deg,#fff 40%,#ffd9a8 50%,#fff 60%);background-size:300% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;animation:teGlint 1.6s var(--te-ease) both}
+@keyframes teGlint{from{background-position:100% 0}to{background-position:0 0}}
+
+/* 6. Links in text: underline grows from the left on hover */
+.profiles a,.pub .cite a,.contact p a,.step-detail a{text-decoration:none;background:linear-gradient(currentColor,currentColor) no-repeat 0 100%/0% 1.5px;transition:background-size .5s var(--te-ease)}
+.profiles a{background-size:100% 1px}
+.profiles a:hover,.pub .cite a:hover,.contact p a:hover{background-size:100% 1.5px}
+
+/* 7. Tab panels and timeline card: lines enter one after another */
+.panel.on > *,.panel.on .two > *,.tl-card > *{animation:teLine .7s var(--te-ease) both}
+.panel.on .two > :nth-child(2),.tl-card > :nth-child(2){animation-delay:.08s}
+.tl-card > :nth-child(3){animation-delay:.16s}
+@keyframes teLine{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* 8. Card titles nudge on hover */
+.proj h3,.li h3,.sg h3{transition:transform .5s var(--te-ease),color .4s}
+.proj:hover h3{transform:translateX(4px);color:var(--blue)}
+.proj.wide:hover h3{color:#fff}
+
+@media (prefers-reduced-motion: reduce){
+  .te-letters .ch,.te-words .w > span,.eyebrow.te-wipe,mark.hl,.stat b,.hero h1{animation:none!important;transition:none!important;opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}
+  mark.hl{background-size:100% .42em!important}
+}
+@media print{
+  .te-letters .ch,.te-words .w > span,.eyebrow.te-wipe{animation:none!important;opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}
+  .hero h1 .ch{color:#000080!important;text-shadow:none!important}
+  .stat b.te-glint{color:#000080!important;background:none!important;-webkit-background-clip:border-box;background-clip:border-box}
+  mark.hl{background-size:100% .42em!important;color:#000!important}
+}
