@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prahalad Krishnakumar</title>
+<meta name="description" content="Research portfolio of Prahalad Krishnakumar: comparative transcriptomics, structural bioinformatics and molecular biology.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: an Imperial Blue hero with a live gene-network canvas, then white sections that the reader can operate (tabs, filters, timeline). Single theme by choice. */
+:root{
+  --blue:#0000CD;        /* Imperial Blue */
+  --navy:#000080;        /* deep blue for depth */
+  --white:#ffffff;
+  --tint:#eef0ff;        /* pale blue panels */
+  --ink:#0d1030;
+  --muted:#4f557a;
+  --rule:#d7dbf5;
+  --feline:#e08a1e;      /* second series colour for cat data */
+  --font-display:"Manrope", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-body:"Manrope", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --r:16px;
+  --shadow:0 1px 2px rgba(13,16,48,.04),0 6px 20px rgba(13,16,48,.05);
+  --shadow-up:0 2px 4px rgba(13,16,48,.04),0 22px 48px rgba(0,0,128,.13);
+  --font-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--font-body);font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--blue);color:#fff}
+::-webkit-scrollbar{width:10px;height:8px}::-webkit-scrollbar-thumb{background:#c4c9f0;border-radius:8px}::-webkit-scrollbar-track{background:transparent}
+a{color:var(--blue);text-underline-offset:2px}
+button{font:inherit;cursor:pointer}
+a:focus-visible,button:focus-visible{outline:3px solid var(--feline);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.18;letter-spacing:-.02em;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.7rem,3.6vw,2.35rem);font-weight:800;color:var(--navy);letter-spacing:-.03em}
+h3{font-size:1.15rem}
+p{margin:0}
+.eyebrow{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.mono{font-family:var(--font-mono);font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.sec-head{display:grid;gap:6px;margin-bottom:26px}
+.sec-head p{color:var(--muted);max-width:62ch}
+section{padding:96px 0}
+@media (max-width:620px){section{padding:64px 0}}
+section.alt{background:var(--tint)}
+
+/* ---------- nav ---------- */
+nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid transparent;transition:box-shadow .4s var(--ease),border-color .4s,background .4s}
+nav.scrolled{background:rgba(255,255,255,.86);border-bottom-color:rgba(215,219,245,.8);box-shadow:0 6px 24px rgba(13,16,48,.06)}
+nav .wrap{display:flex;align-items:center;gap:20px;height:56px}
+nav .brand{font-family:var(--font-display);font-weight:800;letter-spacing:-.02em;color:var(--navy);text-decoration:none;white-space:nowrap}
+nav .menu{display:flex;gap:18px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+nav .menu a{color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:600;white-space:nowrap;padding:6px 0;position:relative;transition:color .3s var(--ease)}
+nav .menu a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:2px;background:var(--blue);transform:scaleX(0);transition:transform .45s var(--ease)}
+nav .menu a:hover,nav .menu a.on{color:var(--blue)}
+nav .menu a:hover::after,nav .menu a.on::after{transform:scaleX(1)}
+@media (max-width:700px){nav .brand{display:none}nav .menu{margin-left:0}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;background:var(--blue);color:var(--white);overflow:hidden}
+.aura{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;pointer-events:none;z-index:1}
+.aura.a1{width:520px;height:520px;background:#3b3bff;right:-120px;top:-160px;animation:drift1 22s ease-in-out infinite alternate}
+.aura.a2{width:420px;height:420px;background:#00007a;left:-140px;bottom:-200px;animation:drift2 26s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(-140px,120px) scale(1.15)}}
+@keyframes drift2{to{transform:translate(160px,-80px) scale(1.1)}}
+.hero canvas{z-index:1;position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(0,0,205,.92) 25%,rgba(0,0,205,.35) 70%,rgba(0,0,128,.25));pointer-events:none;z-index:1}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:48px;align-items:center;padding-top:64px;padding-bottom:64px}
+.hero .eyebrow{color:#c9ceff}
+.hbadge{display:inline-block;margin-top:12px;background:#fff;color:var(--blue);font-weight:700;font-size:.8rem;padding:5px 12px;border-radius:999px;animation:popin .8s .1s both}
+.hero h1{font-size:clamp(2.4rem,6vw,3.9rem);font-weight:800;margin-top:14px;letter-spacing:-.035em;line-height:1.04}
+.hero .tagline{font-size:1.2rem;margin-top:12px;max-width:52ch;color:#e8eaff}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;border:1.5px solid rgba(255,255,255,.85);font-weight:700;text-decoration:none;font-size:.92rem;letter-spacing:-.005em}
+.btn.solid{background:var(--white);color:var(--blue)}
+.btn.ghost{background:transparent;color:var(--white)}
+.btn.ghost:hover{background:rgba(255,255,255,.12)}
+.btn.solid:hover{background:#e3e6ff}
+.profiles{display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;font-size:.9rem}
+.profiles a{color:#fff;opacity:.9}
+.glance{background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.26);border-radius:22px;padding:18px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 30px 60px rgba(0,0,60,.25),inset 0 1px 0 rgba(255,255,255,.25);animation:popin .9s .3s both}
+.glance-h{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#c9ceff;margin:0 0 10px 4px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:14px;transition:background .4s var(--ease),transform .5s var(--ease);padding:14px 14px 12px}
+.stat:hover{background:rgba(255,255,255,.14);transform:translateY(-2px)}
+.stat b{display:block;font-family:var(--font-display);font-weight:800;letter-spacing:-.03em;font-size:1.95rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:.82rem;line-height:1.35;color:#d6daff;margin-top:4px}
+@media (max-width:760px){
+  .hero .wrap{grid-template-columns:1fr;padding-top:36px;padding-bottom:40px;gap:28px}
+        .stat:nth-child(2){border-right:0}
+  .stat:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.18)}
+}
+
+/* ---------- thesis explorer ---------- */
+.explorer{border:1px solid var(--rule);border-radius:22px;overflow:hidden;background:var(--white);box-shadow:var(--shadow-up)}
+.ex-top{padding:26px 28px;background:linear-gradient(120deg,var(--navy),#0a0aa8);color:var(--white);display:grid;gap:6px}
+.ex-top .eyebrow{color:#aeb5ff}
+.ex-top p{color:#d6daff;font-size:.95rem}
+.tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--rule);background:var(--tint);scrollbar-width:none;position:relative}
+.tab-ink{position:absolute;bottom:0;left:0;height:3px;border-radius:3px 3px 0 0;background:var(--blue);transition:transform .55s var(--ease),width .55s var(--ease);pointer-events:none}
+.tabs button{flex:1 0 auto;background:none;border:0;padding:15px 18px;color:var(--muted);font-weight:700;white-space:nowrap;transition:color .35s var(--ease),background .35s var(--ease)}
+.tabs button:hover{color:var(--navy)}
+.tabs button[aria-selected="true"]{color:var(--blue);background:var(--white)}
+.tabs .num{font-family:var(--font-mono);font-size:.75rem;margin-right:6px;opacity:.7}
+.panel{padding:30px 28px;display:none}
+.panel.on{display:grid;gap:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.big-q{font-family:var(--font-display);font-size:clamp(1.15rem,3.6vw,1.45rem);color:var(--navy);line-height:1.3}
+.disease{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dz{border:1px solid var(--rule);border-radius:14px;padding:14px}
+.dz b{display:block;font-size:1rem}
+.dz span{font-size:.88rem;color:var(--muted)}
+@media (max-width:480px){.disease{grid-template-columns:1fr}.brow{grid-template-columns:118px 1fr 32px}.panel{padding:22px 18px}}
+.dz.h{border-top:4px solid var(--blue)} .dz.f{border-top:4px solid var(--feline)}
+.bars{display:grid;gap:10px}
+.brow{display:grid;grid-template-columns:140px 1fr 36px;gap:10px;align-items:center;font-size:.9rem}
+.track{height:18px;background:var(--tint);border-radius:4px;overflow:hidden}
+.fill{height:100%;border-radius:4px;transition:width 1s var(--ease)}
+.fill.h{background:var(--blue)} .fill.hc{background:#6b6bf0} .fill.f{background:var(--feline)} .fill.fc{background:#f2bf7d}
+.brow .n{text-align:right;font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.cap{font-size:.84rem;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;counter-reset:s}
+@media (max-width:760px){.steps{grid-template-columns:1fr}}
+.step{text-align:left;border:1px solid var(--rule);background:var(--white);border-radius:14px;padding:12px;display:grid;gap:4px;color:var(--ink);position:relative}
+.step .k{font-family:var(--font-mono);font-size:.72rem;color:var(--blue)}
+.step b{font-size:.95rem}
+.step[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.step[aria-pressed="true"] .k,.step[aria-pressed="true"] .cap{color:#d6daff}
+.step-detail{background:var(--tint);border-radius:14px;padding:16px 18px;border-left:4px solid var(--blue);min-height:84px}
+.donut-wrap{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.donut{width:170px;height:170px}
+.donut .bg{stroke:var(--tint)} .donut .fg{stroke:var(--blue);transition:stroke-dashoffset 1.4s var(--ease)}
+.donut text{font-family:var(--font-display);font-weight:700;fill:var(--navy)}
+.finding{display:grid;gap:10px}
+.finding li{margin:0}
+.chips-inline{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:.78rem;padding:4px 11px;border-radius:999px;background:var(--tint);color:var(--navy);font-weight:600}
+.pill.shared{background:#dfe2ff} .pill.diverge{background:#fde9d1;color:#7a4300}
+ul.clean{margin:0;padding-left:18px;display:grid;gap:6px}
+
+/* ---------- projects ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.filters button{border:1.5px solid var(--rule);background:var(--white);color:var(--navy);border-radius:999px;padding:8px 16px;font-weight:700;font-size:.88rem;transition:background .35s var(--ease),color .35s var(--ease),border-color .35s,transform .4s var(--ease)}
+.filters button:hover{border-color:var(--blue);transform:translateY(-1px)}
+.filters button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:var(--white);box-shadow:0 8px 18px rgba(0,0,205,.25)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+@media (max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.grid{grid-template-columns:1fr}}
+.proj.wide{grid-column:1/-1;flex-direction:row;align-items:center;gap:24px;background:linear-gradient(120deg,var(--navy),#0b0bb5);color:#fff;border-color:var(--navy)}
+.proj.wide .wide-main{display:grid;gap:10px;flex:1}
+.proj.wide .mono,.proj.wide .org{color:#c9ceff}
+.proj.wide .pill{background:rgba(255,255,255,.14);color:#fff}
+.btn-line{transition:background .35s var(--ease),color .35s var(--ease),transform .45s var(--ease);flex:0 0 auto;border:2px solid #fff;color:#fff;border-radius:999px;padding:9px 18px;font-weight:700;text-decoration:none;white-space:nowrap}
+.btn-line:hover{background:#fff;color:var(--navy)}
+@media (max-width:620px){.proj.wide{flex-direction:column;align-items:flex-start}}
+.meta{display:grid;gap:0}
+.meta .org{font-size:.85rem;color:var(--muted)}
+.proj .toggle{margin-top:auto;padding-top:8px}
+.proj{position:relative;overflow:hidden;background:var(--white);border:1px solid rgba(215,219,245,.9);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow);transition:transform .6s var(--ease),box-shadow .6s var(--ease),border-color .4s}
+.proj:hover{box-shadow:var(--shadow-up);border-color:#c4c9f0}
+.proj::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(360px circle at var(--mx,50%) var(--my,0%),rgba(0,0,205,.08),transparent 60%);opacity:0;transition:opacity .5s var(--ease)}
+.proj:hover::after{opacity:1}
+.proj.wide::after{background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.12),transparent 60%)}
+.proj.enter{animation:cardIn .6s var(--ease) both}
+.proj.hide{display:none}
+.proj .tags{display:flex;flex-wrap:wrap;gap:6px}
+.proj p{font-size:.95rem}
+.proj .more{display:grid;grid-template-rows:0fr;opacity:0;font-size:.92rem;border-top:1px dashed transparent;transition:grid-template-rows .6s var(--ease),opacity .5s var(--ease),border-color .4s}
+.proj .more-in{overflow:hidden;min-height:0;display:grid;gap:8px}
+.proj.open .more{grid-template-rows:1fr;opacity:1;border-top-color:var(--rule)}
+.proj.open .more-in{padding-top:12px}
+.proj .toggle{transition:color .3s}
+.proj .toggle::after{content:" ↓";display:inline-block;transition:transform .5s var(--ease)}
+.proj.open .toggle::after{transform:rotate(180deg)}
+.proj .toggle{align-self:flex-start;background:none;border:0;color:var(--blue);font-weight:700;padding:4px 0}
+.dg{display:grid;gap:6px;margin-top:4px}
+.dg .brow{grid-template-columns:104px 1fr auto;font-size:.85rem}.dg .n{white-space:nowrap}
+
+/* ---------- timeline ---------- */
+.tl{position:relative}
+.tl-track{display:flex;gap:0;overflow-x:auto;padding:18px 28px 8px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 28px,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,transparent,#000 28px,#000 calc(100% - 28px),transparent);scrollbar-width:thin;scroll-snap-type:x proximity}
+.tl-item{flex:0 0 auto;width:112px;display:grid;justify-items:center;gap:8px;background:none;border:0;padding:0;position:relative;scroll-snap-align:center;color:var(--muted)}
+.tl-item::before{content:"";position:absolute;top:9px;left:0;right:0;height:2px;background:var(--rule);z-index:0}
+.tl-item:first-child::before{left:50%} .tl-item:last-child::before{right:50%}
+.tl-dot{width:20px;height:20px;border-radius:50%;background:var(--white);border:3px solid var(--blue);position:relative;z-index:1;transition:transform .5s var(--ease),background .4s}
+.tl-item:hover .tl-dot{transform:scale(1.18)}
+.tl-item[data-k="award"] .tl-dot{border-color:var(--feline)}
+.tl-item .d{font-family:var(--font-mono);font-size:.74rem}
+.tl-item .t{font-size:.8rem;text-align:center;line-height:1.25;padding:0 4px}
+.tl-item[aria-selected="true"] .tl-dot{background:var(--blue);transform:scale(1.3)}
+.tl-item[data-k="award"][aria-selected="true"] .tl-dot{background:var(--feline)}
+.tl-item[aria-selected="true"]{color:var(--navy);font-weight:700}
+.tl-card{margin-top:16px;background:var(--white);border:1px solid var(--rule);border-left:4px solid var(--blue);border-radius:var(--r);box-shadow:var(--shadow);transition:border-color .5s var(--ease);padding:18px 20px;display:grid;gap:6px}
+.tl-nav{display:flex;gap:8px;margin-top:12px}
+.tl-nav button:hover{background:var(--blue);color:#fff}
+.tl-nav button{transition:background .35s var(--ease),color .35s;border:1.5px solid var(--blue);background:var(--white);color:var(--blue);border-radius:999px;padding:6px 14px;font-weight:600}
+.legend{display:flex;gap:16px;font-size:.84rem;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;border:3px solid var(--blue);margin-right:6px;vertical-align:-1px}
+.legend i.a{border-color:var(--feline)}
+
+/* ---------- publications ---------- */
+.pubs{display:grid;gap:14px}
+.pub{background:var(--white);border:1px solid rgba(215,219,245,.9);border-radius:var(--r);box-shadow:var(--shadow);transition:box-shadow .6s var(--ease),transform .6s var(--ease);padding:18px 20px;display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:start}
+.pub:hover{box-shadow:var(--shadow-up);transform:translateY(-2px)}
+.pub .kind{justify-self:start;font-family:var(--font-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;background:var(--blue);color:var(--white);padding:4px 8px;border-radius:4px;white-space:nowrap}
+.pub .kind.alt{background:var(--tint);color:var(--navy)}
+.pub .actions{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap}
+.pub .actions a,.pub .actions button{background:var(--white);border:1.5px solid var(--rule);color:var(--blue);font-weight:600;padding:4px 14px;border-radius:999px;font-size:.88rem;text-decoration:none;transition:border-color .2s,background .2s}
+.pub .actions a:hover,.pub .actions button:hover{border-color:var(--blue);background:var(--tint)}
+@media (max-width:620px){.pub{grid-template-columns:1fr;gap:8px}}
+
+/* ---------- skills / misc ---------- */
+.skill-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.sg{border:1px solid rgba(215,219,245,.9);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;background:var(--white)}
+.sg h3{font-size:.98rem;margin-bottom:10px;color:var(--navy)}
+.sg .chips-inline span{font-size:.85rem;padding:4px 10px;border-radius:6px;background:var(--tint);color:var(--ink)}
+.cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+@media (max-width:900px){.cols3{grid-template-columns:1fr}}
+.subhead{font-family:var(--font-body);font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.li h3{font-size:1.02rem;text-wrap:pretty}
+.list{display:grid;gap:16px}
+.li{display:grid;gap:2px;padding-left:14px;border-left:3px solid var(--blue)}
+.li.award{border-left-color:var(--feline)}
+.li p{font-size:.92rem;color:var(--muted)}
+.talks{display:grid;gap:12px}
+.talk{display:grid;grid-template-columns:120px 1fr;gap:14px;font-size:.95rem;padding:12px 14px;border-bottom:1px solid var(--rule);border-radius:10px;transition:background .4s var(--ease)}
+.talk:hover{background:var(--white)}
+@media (max-width:620px){.talk{grid-template-columns:1fr;gap:2px}}
+.contact{background:var(--blue);color:var(--white);text-align:left}
+.contact h2{color:var(--white)}
+.contact p{color:#e3e6ff}
+.contact .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;align-items:center}
+footer{background:var(--navy);color:#c9ceff;font-size:.85rem;padding:18px 0}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:rgba(0,0,128,.92);backdrop-filter:blur(8px);color:#fff;padding:11px 18px;border-radius:999px;box-shadow:0 12px 30px rgba(0,0,60,.3);font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .4s var(--ease),transform .5s var(--ease);z-index:50}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- motion layer ---------- */
+.progress{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:var(--blue);z-index:40}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes popin{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,0,205,.45)}70%{box-shadow:0 0 0 12px rgba(0,0,205,0)}100%{box-shadow:0 0 0 0 rgba(0,0,205,0)}}
+@keyframes sheen{from{background-position:-200% 0}to{background-position:200% 0}}
+.hero .wrap > div:first-child > *{animation:rise .8s var(--ease) both}
+.hero .wrap > div:first-child > :nth-child(2){animation-delay:.08s}
+.hero .wrap > div:first-child > :nth-child(3){animation-delay:.16s}
+.hero .wrap > div:first-child > :nth-child(4){animation-delay:.24s}
+.hero .wrap > div:first-child > :nth-child(5){animation-delay:.32s}
+.hero .wrap > div:first-child > :nth-child(6){animation-delay:.40s}
+.stat{animation:rise .8s both}
+.stat:nth-child(1){animation-delay:.45s}.stat:nth-child(2){animation-delay:.55s}.stat:nth-child(3){animation-delay:.65s}.stat:nth-child(4){animation-delay:.75s}
+.rotline{margin-top:10px;font-size:1.05rem;color:#d6daff;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.rot{display:inline-block;font-weight:700;color:#fff;border-bottom:2px solid #ffbe6e;transition:opacity .35s,transform .35s}
+.rot.out{opacity:0;transform:translateY(-10px)}
+.btn{transition:transform .45s var(--ease),background .3s,box-shadow .45s var(--ease),color .3s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,60,.28)}
+.btn:active{transform:translateY(0) scale(.98)}
+.rv{opacity:0;transform:translateY(26px);filter:blur(6px);transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease)}
+.rv.in{opacity:1;transform:none;filter:none}
+.sec-head h2::after{content:"";display:block;height:4px;width:64px;background:var(--blue);border-radius:2px;margin-top:12px;transition:width 1s .2s var(--ease)}
+.contact .sec-head h2::after,.contact h2::after{background:#fff}
+.sec-head.rv h2::after{width:0}
+.sec-head.rv.in h2::after{width:64px}
+.panel.on{animation:fadeSlide .6s var(--ease) both}
+.proj{transform-style:preserve-3d;will-change:transform}
+.step{transition:background .4s var(--ease),color .4s var(--ease),transform .45s var(--ease),box-shadow .45s var(--ease)}
+.step:hover{transform:translateY(-2px)}
+.step[aria-pressed="true"]{box-shadow:0 8px 18px rgba(0,0,205,.25)}
+.step-detail{animation:fadeSlide .35s both}
+.tl-item::before{transition:background .4s}
+.tl-item.past::before,.tl-item[aria-selected="true"]::before{background:var(--blue)}
+.tl-item[aria-selected="true"] .tl-dot{animation:pulse 1.8s infinite}
+.tl-card{animation:fadeSlide .35s both}
+.sg .chips-inline span{transition:transform .6s var(--ease),opacity .6s var(--ease),background .3s,color .3s;transition-delay:calc(var(--i,0) * 35ms)}
+.sg.rv .chips-inline span{opacity:0;transform:scale(.7)}
+.sg.rv.in .chips-inline span{opacity:1;transform:none}
+.sg .chips-inline span:hover{background:var(--blue);color:#fff}
+.contact .wrap{display:grid;grid-template-columns:1fr 220px;gap:24px;align-items:center}
+#helix{width:220px;height:260px;display:block}
+@media (max-width:760px){.contact .wrap{grid-template-columns:1fr}#helix{width:100%;height:160px}}
+.totop{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:1.2rem;box-shadow:0 8px 20px rgba(0,0,128,.3);opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .3s,transform .3s;z-index:30}
+.totop.show{opacity:1;transform:none;pointer-events:auto}
+</style>
+</head>
+<body>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<nav aria-label="Sections">
+  <div class="wrap">
+    <a class="brand" href="#top">P. Krishnakumar</a>
+    <div class="menu">
+      <a href="#thesis">Thesis</a>
+      <a href="#projects">Projects</a>
+      <a href="#journey">Timeline</a>
+      <a href="#publications">Publications</a>
+      <a href="#skills">Skills</a>
+      <a href="#recognition">Recognition</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <span class="aura a1" aria-hidden="true"></span><span class="aura a2" aria-hidden="true"></span>
+  <canvas id="net" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Molecular medicine · Comparative transcriptomics</p>
+      <span class="hbadge">MSc, Distinction · Imperial College London</span>
+      <h1>Prahalad Krishnakumar</h1>
+      <p class="tagline">I compare how humans and animals respond to disease at the level of gene expression. My MSc thesis matched blood transcriptomes from children with MIS-C and cats with FIP to find the inflammatory programmes the two species share.</p>
+      <p class="rotline">Research interests: <span class="rot" id="rot" aria-live="off">gene regulation</span></p>
+      <div class="ctas">
+        <a class="btn solid" href="#thesis">Explore my thesis</a>
+        <a class="btn ghost" href="#projects">See all projects</a>
+        <button class="btn ghost" type="button" data-copy="prahalad.k2003@gmail.com">Copy email</button>
+      </div>
+      <div class="profiles">
+        <a href="https://www.linkedin.com/in/prahalad-computationalbiology">LinkedIn</a>
+        <a href="https://orcid.org/0009-0003-1769-5902">ORCID</a>
+        <a href="https://scholar.google.com/citations?hl=en&amp;user=1g_hAOQAAAAJ">Google Scholar</a>
+        <span>prahalad.k2003@gmail.com</span>
+      </div>
+    </div>
+      <aside class="glance" aria-label="At a glance">
+      <p class="glance-h">At a glance</p>
+      <div class="stats">
+    <div class="stat"><b data-count="102">102</b><span>blood transcriptomes analysed</span></div>
+    <div class="stat"><b data-count="81.4" data-dec="1" data-suf="%">81.4%</b><span>cross-species concordance</span></div>
+    <div class="stat"><b data-count="3.97" data-dec="2">3.97</b><span>B.Tech GPA (of 4), VIT</span></div>
+    <div class="stat"><b data-count="3">3</b><span>published outputs: 2 papers, 1 patent application</span></div>
+  </div>
+    </aside>
+  </div>
+</header>
+
+<!-- ================= THESIS ================= -->
+<section id="thesis">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Featured research · MSc thesis · 03/2026 – 09/2026</p>
+      <h2>Do children and cats share an inflammatory response to coronavirus disease?</h2>
+      <p>Select each tab to follow the project from question to result.</p>
+    </div>
+
+    <div class="explorer">
+      <div class="ex-top">
+        <span class="eyebrow">Imperial College London · in collaboration with LMU Munich</span>
+        <h3>Cross-species comparative blood transcriptomics of human MIS-C and feline infectious peritonitis</h3>
+        <p>Supervisors: Dr Aubrey Cunnington and Dr Claire Dunican · Thesis grade: Distinction · Manuscript in preparation</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Thesis explorer">
+        <button role="tab" id="t-q" aria-controls="p-q" aria-selected="true"><span class="num">01</span>Question</button>
+        <button role="tab" id="t-d" aria-controls="p-d" aria-selected="false" tabindex="-1"><span class="num">02</span>Data</button>
+        <button role="tab" id="t-m" aria-controls="p-m" aria-selected="false" tabindex="-1"><span class="num">03</span>Pipeline</button>
+        <button role="tab" id="t-f" aria-controls="p-f" aria-selected="false" tabindex="-1"><span class="num">04</span>Findings</button>
+        <button role="tab" id="t-l" aria-controls="p-l" aria-selected="false" tabindex="-1"><span class="num">05</span>Limits</button>
+        <span class="tab-ink" id="tabInk" aria-hidden="true"></span>
+      </div>
+
+      <div class="panel on" role="tabpanel" id="p-q" aria-labelledby="t-q">
+        <div class="two">
+          <p class="big-q">Two severe inflammatory diseases follow coronavirus infection in two different species. If their blood gene-expression responses agree, the cat disease can help explain the human one.</p>
+          <div class="disease">
+            <div class="dz h"><b>MIS-C</b><span>Multisystem inflammatory syndrome in children, after SARS-CoV-2 infection</span></div>
+            <div class="dz f"><b>FIP</b><span>Feline infectious peritonitis, after feline coronavirus infection</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-d" aria-labelledby="t-d" hidden>
+        <div class="two">
+          <div>
+            <h3 style="margin-bottom:12px">102 whole-blood transcriptomes</h3>
+            <div class="bars" role="img" aria-label="38 MIS-C cases, 42 paediatric controls, 17 FIP cases, 5 feline controls">
+              <div class="brow"><span>MIS-C cases</span><div class="track"><div class="fill h" data-w="90.5" style="width:90.5%"></div></div><span class="n">38</span></div>
+              <div class="brow"><span>Paediatric controls</span><div class="track"><div class="fill hc" data-w="100" style="width:100%"></div></div><span class="n">42</span></div>
+              <div class="brow"><span>FIP cases</span><div class="track"><div class="fill f" data-w="40.5" style="width:40.5%"></div></div><span class="n">17</span></div>
+              <div class="brow"><span>Feline controls</span><div class="track"><div class="fill fc" data-w="11.9" style="width:11.9%"></div></div><span class="n">5</span></div>
+            </div>
+            <p class="cap" style="margin-top:10px">Blue: human. Orange: cat. Bar length is relative to the largest group (42).</p>
+          </div>
+          <div style="display:grid;gap:10px">
+            <h3>Why the design matters</h3>
+            <p>Each species has its own cases and controls. I measured the disease effect inside each species first, then compared the two effects. This removes most of the difference that comes only from species.</p>
+            <p class="cap">The feline control group is small (n = 5), so I treat feline effect sizes with care.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-m" aria-labelledby="t-m" hidden>
+        <p>I built the workflow in R. Select a step to see what it does.</p>
+        <div class="steps" role="group" aria-label="Pipeline steps">
+          <button class="step" type="button" aria-pressed="true" data-i="0"><span class="k">STEP 1</span><b>Explore</b><span class="cap">PCAtools</span></button>
+          <button class="step" type="button" aria-pressed="false" data-i="1"><span class="k">STEP 2</span><b>Differential expression</b><span class="cap">DESeq2</span></button>
+          <button class="step" type="button" aria-pressed="false" data-i="2"><span class="k">STEP 3</span><b>Orthologue mapping</b><span class="cap">biomaRt</span></button>
+          <button class="step" type="button" aria-pressed="false" data-i="3"><span class="k">STEP 4</span><b>Modules &amp; pathways</b><span class="cap">BloodGen3Module, limma, IPA</span></button>
+          <button class="step" type="button" aria-pressed="false" data-i="4"><span class="k">STEP 5</span><b>Cell composition</b><span class="cap">CIBERSORTx</span></button>
+        </div>
+        <div class="step-detail" id="stepDetail" aria-live="polite"></div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-f" aria-labelledby="t-f" hidden>
+        <div class="two">
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 120 120" role="img" aria-label="81.4 percent directional concordance">
+              <circle class="bg" cx="60" cy="60" r="50" fill="none" stroke-width="14"/>
+              <circle class="fg" id="donutFg" cx="60" cy="60" r="50" fill="none" stroke-width="14" stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="314.16" stroke-dashoffset="58.44"/>
+              <text x="60" y="66" text-anchor="middle" font-size="22">81.4%</text>
+            </svg>
+            <p style="max-width:28ch">Of <b>3,262</b> orthologue pairs that are significant in both species, <b>81.4%</b> change in the same direction.</p>
+          </div>
+          <div class="finding">
+            <h3>What the two diseases share, and where they differ</h3>
+            <ul class="clean">
+              <li><span class="pill shared">Shared</span> Neutrophil-associated inflammatory programmes</li>
+              <li><span class="pill diverge">Divergent</span> Interferon-associated responses</li>
+            </ul>
+            <p class="cap">Found with transcriptional-module and pathway analyses.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-l" aria-labelledby="t-l" hidden>
+        <div class="two">
+          <div style="display:grid;gap:10px">
+            <h3>Blood is a mixture of cells</h3>
+            <p>If a disease increases the number of neutrophils in blood, neutrophil genes go up even when no single cell changes its gene regulation. I examined this with CIBERSORTx cell-mixture estimates and feline clinical measurements.</p>
+          </div>
+          <div style="display:grid;gap:10px">
+            <h3>What this means for the result</h3>
+            <p>Part of the shared signal can come from changes in cell composition. So I report the concordance as a shared blood response, and I do not claim that it is all regulation inside cells.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Research projects</p>
+      <h2>Computation and the bench</h2>
+      <p>Filter by approach. Select "Show details" on a project for methods and results.</p>
+    </div>
+    <div class="filters" role="group" aria-label="Filter projects">
+      <button type="button" aria-pressed="true" data-f="all">All (6)</button>
+      <button type="button" aria-pressed="false" data-f="omics">Transcriptomics</button>
+      <button type="button" aria-pressed="false" data-f="struct">Structural bioinformatics &amp; drug design</button>
+      <button type="button" aria-pressed="false" data-f="wet">Wet lab</button>
+    </div>
+    <div class="grid" id="projGrid">
+      <article class="proj wide" data-tags="omics">
+        <div class="wide-main">
+          <p class="meta"><span class="mono">03/2026 – 09/2026</span><span class="org">Imperial College London · MSc thesis · Featured</span></p>
+          <h3>MIS-C and FIP blood transcriptomics</h3>
+          <p>Cross-species comparison of 102 blood transcriptomes from children and cats. 81.4% of 3,262 shared significant orthologue pairs change in the same direction.</p>
+          <div class="tags"><span class="pill">R</span><span class="pill">DESeq2</span><span class="pill">biomaRt</span><span class="pill">CIBERSORTx</span></div>
+        </div>
+        <a class="btn-line" href="#thesis">Open the thesis explorer ↑</a>
+      </article>
+      <article class="proj" data-tags="struct">
+        <p class="meta"><span class="mono">01/2025 – 05/2025</span><span class="org">BPRI, Noida · Project lead</span></p>
+        <h3>Huntingtin–HAP40 complex</h3>
+        <p>A computational workflow to find small molecules that bind the Huntingtin–HAP40 complex, with a PROTAC strategy for later tests.</p>
+        <div class="tags"><span class="pill">Patent application</span><span class="pill">Biopython</span><span class="pill">AutoDock Vina</span></div>
+        <div class="more" id="m1"><div class="more-in">
+          <p>Built a workflow for the complex (PDB 6X9O) and automated structural-quality checks with a custom Biopython script.</p><p>Prioritised epigallocatechin by AutoDock Vina screening and BBB-permeability and toxicity prediction.</p><p>Output: Indian patent application 202511108447 A; oral presentation at BioTrendz 2025. Supervisor: Dr Uma Kumari.</p>
+        </div></div>
+        <button class="toggle" type="button" aria-expanded="false" aria-controls="m1">Show details</button>
+      </article>
+      <article class="proj" data-tags="struct">
+        <p class="meta"><span class="mono">07/2024 – 11/2024</span><span class="org">VIT, Vellore · Undergraduate thesis</span></p>
+        <h3>Chaperone binding to Tau</h3>
+        <p>Which chaperone binds Tau most strongly? I compared archaeal, human and <i>E. coli</i> chaperones by docking.</p>
+        <div class="tags"><span class="pill">Best Paper Award</span><span class="pill">ClusPro</span><span class="pill">PRODIGY</span></div>
+        <div class="more" id="m2"><div class="more-in">
+          <div class="dg" role="img" aria-label="Predicted binding free energy: E. coli Hsp33 minus 16.0, human Hsp70 minus 9.1 kilocalories per mole">
+            <div class="brow"><span><i>E. coli</i> Hsp33</span><div class="track"><div class="fill h" data-w="100" style="width:100%"></div></div><span class="n">−16.0 kcal/mol</span></div>
+            <div class="brow"><span>Human Hsp70</span><div class="track"><div class="fill hc" data-w="56.9" style="width:56.9%"></div></div><span class="n">−9.1 kcal/mol</span></div>
+            <p class="cap">Predicted ΔG. A longer bar means stronger predicted binding.</p>
+          </div><p>Used ClusPro protein–protein docking and PRODIGY affinity estimation. Hsp33 is a computational candidate for follow-up.</p><p>Shared Best Paper Award with co-author M. Bora, One Health conference, Jan 2026. Supervisor: Dr C. Sudandiradoss.</p>
+        </div></div>
+        <button class="toggle" type="button" aria-expanded="false" aria-controls="m2">Show details</button>
+      </article>
+      <article class="proj" data-tags="struct">
+        <p class="meta"><span class="mono">03/2025 – 03/2026</span><span class="org">VIT, Vellore · Review co-author</span></p>
+        <h3>E3 ubiquitin ligases review</h3>
+        <p>A published review of E3 ligase structure, disease roles and targeted protein degradation. I made all the figures.</p>
+        <div class="tags"><span class="pill">Frontiers 2026</span><span class="pill">PROTACs</span><span class="pill">Figures</span></div>
+        <div class="more" id="m3"><div class="more-in">
+          <p>Integrated structural and disease evidence across RING, HECT, RBR and RCR E3 ligase families.</p><p>Evaluated PROTAC strategies, E3-modulated CAR-T approaches and computational drug-design methods. Supervisor: Dr C. Sudandiradoss.</p>
+        </div></div>
+        <button class="toggle" type="button" aria-expanded="false" aria-controls="m3">Show details</button>
+      </article>
+      <article class="proj" data-tags="wet">
+        <p class="meta"><span class="mono">01/2025 – 04/2025</span><span class="org">USV Pvt Ltd, Mumbai · R&amp;D intern</span></p>
+        <h3>Antibody biosimilar cloning</h3>
+        <p>Expression constructs for two EMEA biosimilar projects: faricimab and risankizumab.</p>
+        <div class="tags"><span class="pill">Cloning</span><span class="pill">Restriction digest</span><span class="pill">Industry</span></div>
+        <div class="more" id="m4"><div class="more-in">
+          <p>Curated antibody sequences and prepared heavy- and light-chain expression constructs.</p><p>Helped troubleshoot incomplete ligations and found double-insert-positive constructs by diagnostic restriction digestion.</p><p>Presented a perfusion versus fed-batch technology assessment to USV leadership. Supervisors: Dr Shardul Salunkhe and Anjali Rakesh Chutke.</p>
+        </div></div>
+        <button class="toggle" type="button" aria-expanded="false" aria-controls="m4">Show details</button>
+      </article>
+      <article class="proj" data-tags="wet">
+        <p class="meta"><span class="mono">MSc mini project</span><span class="org">Imperial · Dept. of Infectious Disease</span></p>
+        <h3>PM2.5 and vape-liquid co-exposure</h3>
+        <p>How do air pollution particles and vape liquid act together on lung epithelial cells?</p>
+        <div class="tags"><span class="pill">A549 cells</span><span class="pill">RT-qPCR</span><span class="pill">Flow cytometry</span></div>
+        <div class="more" id="m5"><div class="more-in">
+          <p>Compared single and combined exposures over 24 hours with RT-qPCR, Annexin V/7-AAD flow cytometry and LDH release.</p><p>IL6 rose 51.49-fold with vape alone versus 0.90-fold with co-exposure. These were single-experiment results (n = 1), so I reported them as preliminary and flagged possible LDH assay interference.</p>
+        </div></div>
+        <button class="toggle" type="button" aria-expanded="false" aria-controls="m5">Show details</button>
+      </article>
+      <article class="proj" data-tags="struct">
+        <p class="meta"><span class="mono">10/2023 – 01/2024</span><span class="org">BPRI, Noida · Project lead</span></p>
+        <h3>c-KIT kinase in GIST</h3>
+        <p>A structural and docking study of c-KIT, the main driver kinase in gastrointestinal stromal tumour.</p>
+        <div class="tags"><span class="pill">First-author paper</span><span class="pill">CB-Dock2</span></div>
+        <div class="more" id="m6"><div class="more-in">
+          <p>Characterised a 24-residue predicted binding site in c-KIT (PDB 6GQM) and docked sunitinib (Vina score −9.8 kcal/mol).</p><p>Output: first-author paper in JETIR (2024). Supervisor: Dr Uma Kumari.</p>
+        </div></div>
+        <button class="toggle" type="button" aria-expanded="false" aria-controls="m6">Show details</button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TIMELINE ================= -->
+<section id="journey">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Timeline</p>
+      <h2>From Vellore to London</h2>
+      <p>Select a point, or use the arrow keys, to read about each step.</p>
+    </div>
+    <div class="tl">
+      <div class="tl-track" id="tlTrack" role="tablist" aria-label="Timeline"></div>
+      <div class="legend"><span><i></i>Research and study</span><span><i class="a"></i>Award or output</span></div>
+      <div class="tl-card" id="tlCard" aria-live="polite"></div>
+      <div class="tl-nav"><button type="button" id="tlPrev">← Earlier</button><button type="button" id="tlNext">Later →</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PUBLICATIONS ================= -->
+<section id="publications" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Publications and patent</p>
+      <h2>Written outputs</h2>
+    </div>
+    <div class="pubs">
+      <div class="pub">
+        <span class="kind">Review · 2026</span>
+        <div>
+          <p class="cite">Sriram S, <b>Krishnakumar P</b>, Sudandiradoss C. E3 ubiquitin ligases: structural diversity, dysregulation in disease, and their emerging role in targeted therapeutic strategies. <i>Front. Mol. Biosci.</i> 2026;13:1745654.</p>
+          <div class="actions"><a href="https://doi.org/10.3389/fmolb.2026.1745654">Read the paper ↗</a><button type="button" data-cite>Copy citation</button></div>
+        </div>
+      </div>
+      <div class="pub">
+        <span class="kind">Article · 2024</span>
+        <div>
+          <p class="cite"><b>Krishnakumar P</b>, Kumari U. Analysis of gastro-intestinal stromal tumor by computer aided drug designing and bioinformatics tools. <i>J. Emerg. Technol. Innov. Res. (JETIR)</i> 2024;11(2):c56–c65. Paper ID: JETIR2402210.</p>
+          <div class="actions"><button type="button" data-cite>Copy citation</button></div>
+        </div>
+      </div>
+      <div class="pub">
+        <span class="kind">Patent · 2025</span>
+        <div>
+          <p class="cite">Kumari U, <b>Krishnakumar P</b>, Archith Raj M, Chandar R. Multiomics and In-Silico Analysis of Huntingtin–HAP40 Complex with BioPython. Indian Patent Application No. 202511108447 A. Filed 08 Nov 2025; published 26 Dec 2025, <i>The Patent Office Journal</i>, Government of India.</p>
+          <div class="actions"><button type="button" data-cite>Copy citation</button></div>
+        </div>
+      </div>
+      <div class="pub">
+        <span class="kind alt">In preparation</span>
+        <div><p class="cite"><b>Krishnakumar P</b>, et al. Comparative blood transcriptomics of coronavirus-associated hyperinflammation in children (MIS-C) and cats (FIP).</p></div>
+      </div>
+      <div class="pub">
+        <span class="kind alt">MSc writing</span>
+        <div style="display:grid;gap:10px">
+          <p><b>Precision Therapeutics for ALS: Reversing RNA Splicing Defects in Human Cerebellar Organoids.</b> Research grant proposal, Imperial College London, 2026 (Distinction). Proposed spatial transcriptomic and organoid studies of TDP-43 dysfunction and STMN2 mis-splicing.</p>
+          <p><b>Astrocyte-Targeted Therapeutic Strategies for C9orf72-Associated ALS.</b> Review and perspective paper, Imperial College London. Proposed LRP8-targeted siRNA delivery with autophagic aggregate clearance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Technical skills</p>
+      <h2>Tools I use</h2>
+    </div>
+    <div class="skill-groups">
+      <div class="sg"><h3>Programming</h3><div class="chips-inline"><span>R</span><span>Python</span><span>Biopython</span><span>Workflow development</span></div></div>
+      <div class="sg"><h3>Transcriptomics and statistics</h3><div class="chips-inline"><span>DESeq2</span><span>PCAtools</span><span>biomaRt</span><span>limma</span><span>BloodGen3Module</span><span>QIAGEN IPA</span><span>CIBERSORTx</span></div></div>
+      <div class="sg"><h3>Computer-aided drug design</h3><div class="chips-inline"><span>AutoDock Vina</span><span>CB-Dock2</span><span>ClusPro</span><span>PRODIGY</span><span>Clustal Omega</span><span>ADMET prediction</span></div></div>
+      <div class="sg"><h3>Molecular and cell biology</h3><div class="chips-inline"><span>Cloning</span><span>Plasmid prep</span><span>Restriction digest &amp; ligation</span><span>Transformation</span><span>Gel electrophoresis</span><span>A549 culture</span><span>RNA extraction</span><span>RT-qPCR</span><span>Flow cytometry</span><span>LDH assay</span></div></div>
+      <div class="sg"><h3>Clinical immunology</h3><div class="chips-inline"><span>HLA typing (PCR)</span><span>CDC crossmatch</span><span>DSA monitoring</span><span>ELISA</span><span>IFA</span><span>ECLIA</span><span>Rapid diagnostic tests</span></div></div>
+      <div class="sg"><h3>Figures and imaging</h3><div class="chips-inline"><span>BioRender</span><span>ImageJ</span><span>Axiovision</span></div><h3 style="margin-top:16px">Languages</h3><div class="chips-inline"><span>English (TOEFL 102)</span><span>Tamil</span><span>Hindi</span><span>German (A1)</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RECOGNITION ================= -->
+<section id="recognition" class="alt">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Background</p><h2>Education, awards and service</h2></div>
+    <div class="cols3">
+      <div><h3 class="subhead">Education</h3>
+        <div class="list">
+          <div class="li"><span class="mono">09/2025 – 09/2026</span><h3>MSc Molecular Medicine, Distinction</h3><p>Imperial College London. Research thesis: Distinction.</p></div>
+          <div class="li"><span class="mono">2021 – 2025</span><h3>B.Tech Biotechnology, GPA 3.97/4</h3><p>Vellore Institute of Technology, India</p></div>
+          <div class="li"><span class="mono">2019 – 2021</span><h3>Higher Secondary (HSC), 89.5%</h3><p>Pace Junior Science College, Thane, India</p></div>
+        </div>
+      </div>
+      <div><h3 class="subhead">Awards</h3>
+        <div class="list">
+          <div class="li award"><span class="mono">Jan 2026</span><h3>Best Paper Award</h3><p>International Conference on One Health, Tinsukia College, Assam. Shared with M. Bora for the chaperone–Tau study.</p></div>
+          <div class="li award"><span class="mono">Oct 2024</span><h3>NPTEL Elite + Gold, Top 1%</h3><p>Wild Life Ecology, IIT Kanpur / Ministry of Education, India. Score: 100%.</p></div>
+          <div class="li award"><span class="mono">Sep 2024</span><h3>Best Biotechnology Project Award</h3><p>Engineer's Day, VIT. Team bio-filter for metal-ion bioremediation. I led prototyping, pitching and logistics.</p></div>
+        </div>
+      </div>
+      <div><h3 class="subhead">Leadership</h3>
+        <div class="list">
+          <div class="li"><span class="mono">01/2026 – 09/2026</span><h3>Postgraduate Taught Representative</h3><p>Faculty of Medicine Postgraduate Education Board, Imperial. Student voice on programme changes, assessment and support.</p></div>
+          <div class="li"><span class="mono">09/2025 – 09/2026</span><h3>Course Representative, MSc Molecular Medicine</h3><p>Elected liaison for a 37-student international cohort.</p></div>
+          <div class="li"><span class="mono">10/2025 – 09/2026</span><h3>AI Program Representative, Claude Builder Club</h3><p>Imperial. Helped the cohort use Claude-based tools for scientific work.</p></div>
+          <div class="li"><span class="mono">03/2026 – present</span><h3>2026 Ambassador, Thinking About Thinking</h3><p>Interdisciplinary community on AI, neuroscience, mathematics and thought.</p></div>
+          <div class="li"><span class="mono">01/2023 – 01/2025</span><h3>Chairperson &amp; Head of Finance, IEEE PES</h3><p>VIT. Co-founded the PowerXcel ideathon; secured INR 100,000+ in sponsorship.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-head" style="margin-top:48px"><p class="eyebrow">Talks and posters</p><h2>Presentations</h2></div>
+    <div class="talks">
+      <div class="talk"><span class="mono">Jul 2026</span><span>Programme representative speaker, Revolutions in Biomedicine Master's Symposium, Imperial College London.</span></div>
+      <div class="talk"><span class="mono">Jun 2026</span><span>Poster: Comparative Transcriptomic Analysis of Coronavirus-Associated Hyperinflammatory Disease in Children and Felines. MSc Molecular Medicine Poster Session, Imperial.</span></div>
+      <div class="talk"><span class="mono">Mar 2026</span><span>Invited talk: Imparting Experiences of Higher Education in the United Kingdom. VIT (host: Dr Arati Kumari).</span></div>
+      <div class="talk"><span class="mono">Jan 2026</span><span>Paper presentation, Best Paper Award: Chaperone Binding to Tau Protein (with M. Bora). One Health conference, Tinsukia College, Assam.</span></div>
+      <div class="talk"><span class="mono">Sep 2025</span><span>Oral, presenting author: Huntingtin in Complex with HAP40 with BioPython. BioTrendz, NIET, Greater Noida.</span></div>
+      <div class="talk"><span class="mono">2025</span><span>Perfusion Cell Culture for Monoclonal Antibody Production: A Technology Assessment. Internal talk to USV leadership.</span></div>
+      <div class="talk"><span class="mono">MSc</span><span>Group oral: Crohn's Disease. Cohort disease-awareness programme, Imperial. Team score 84% (Distinction).</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div>
+    <h2>Contact</h2>
+    <p style="margin-top:8px">Mumbai, India · prahalad.k2003@gmail.com</p>
+    <div class="row">
+      <button class="btn solid" type="button" data-copy="prahalad.k2003@gmail.com">Copy email address</button>
+      <a class="btn ghost" href="https://www.linkedin.com/in/prahalad-computationalbiology">LinkedIn</a>
+      <a class="btn ghost" href="https://orcid.org/0009-0003-1769-5902">ORCID</a>
+      <a class="btn ghost" href="https://scholar.google.com/citations?hl=en&amp;user=1g_hAOQAAAAJ">Google Scholar</a>
+    </div>
+    </div>
+    <canvas id="helix" aria-hidden="true"></canvas>
+  </div>
+</section>
+<footer><div class="wrap">Prahalad Krishnakumar · Research portfolio · Updated November 2026</div></footer>
+<div class="toast" id="toast" role="status"></div>
+<button class="totop" id="totop" type="button" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- toast + copy ---------- */
+  var toast=document.getElementById('toast'), tt;
+  function say(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove('show')},2200);}
+  function copy(text,ok){
+    try{navigator.clipboard.writeText(text).then(function(){say(ok)},function(){say('Copy did not work. Select the text and copy it.')});}
+    catch(e){say('Copy did not work. Select the text and copy it.');}
+  }
+  document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){copy(b.getAttribute('data-copy'),'Email address copied')})});
+  document.querySelectorAll('[data-cite]').forEach(function(b){b.addEventListener('click',function(){
+    var c=b.closest('.pub').querySelector('.cite').textContent.replace(/\s+/g,' ').trim(); copy(c,'Citation copied');})});
+
+  /* ---------- hero gene-network canvas ---------- */
+  var cv=document.getElementById('net'), ctx=cv.getContext('2d'), nodes=[], W=0, H=0, dpr=Math.min(window.devicePixelRatio||1,2);
+  function size(){
+    var r=cv.getBoundingClientRect(); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    var n=Math.round(Math.min(90,Math.max(36,W*H/9000))); nodes=[];
+    for(var i=0;i<n;i++){nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,r:1.5+Math.random()*2.2,c:Math.random()<.22});}
+  }
+  var mouse={x:-999,y:-999};
+  cv.parentElement.addEventListener('pointermove',function(e){var r=cv.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});
+  cv.parentElement.addEventListener('pointerleave',function(){mouse.x=mouse.y=-999;});
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<nodes.length;i++){
+      var a=nodes[i];
+      for(var j=i+1;j<nodes.length;j++){
+        var b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=dx*dx+dy*dy;
+        if(d<13000){ctx.strokeStyle='rgba(255,255,255,'+(0.2*(1-d/13000))+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+      }
+      var md=(a.x-mouse.x)*(a.x-mouse.x)+(a.y-mouse.y)*(a.y-mouse.y);
+      if(md<22000){ctx.strokeStyle='rgba(255,200,120,'+(0.55*(1-md/22000))+')';ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(mouse.x,mouse.y);ctx.stroke();}
+    }
+    for(var k=0;k<nodes.length;k++){var p=nodes[k];ctx.fillStyle=p.c?'rgba(255,190,110,.95)':'rgba(255,255,255,.85)';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill();}
+  }
+  function step(){
+    for(var i=0;i<nodes.length;i++){var p=nodes[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;}
+    draw(); if(!reduce) requestAnimationFrame(step);
+  }
+  size(); step();
+  var rt; window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){size();if(reduce)draw();},150)});
+
+  /* ---------- reveal animations (content is visible at rest; JS replays on view) ---------- */
+  function countUp(el){
+    var to=parseFloat(el.getAttribute('data-count')),dec=+(el.getAttribute('data-dec')||0),suf=el.getAttribute('data-suf')||'',t0=null,dur=1300;
+    function f(t){if(!t0)t0=t;var k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);el.textContent=(to*e).toFixed(dec)+suf;if(k<1)requestAnimationFrame(f);}
+    requestAnimationFrame(f);
+  }
+  function growBars(scope){
+    scope.querySelectorAll('.fill[data-w]').forEach(function(b){b.style.transition='none';b.style.width='0%';b.offsetWidth;b.style.transition='';b.style.width=b.getAttribute('data-w')+'%';});
+  }
+  function donut(){
+    var fg=document.getElementById('donutFg'); if(!fg)return;
+    fg.style.transition='none';fg.setAttribute('stroke-dashoffset','314.16');fg.getBoundingClientRect();fg.style.transition='';
+    requestAnimationFrame(function(){fg.setAttribute('stroke-dashoffset','58.44');});
+  }
+  if(!reduce && 'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(!e.isIntersecting)return; io.unobserve(e.target);
+      if(e.target.hasAttribute('data-count'))countUp(e.target); else growBars(e.target);
+    })},{threshold:.4});
+    document.querySelectorAll('[data-count]').forEach(function(el){io.observe(el)});
+    document.querySelectorAll('.dg').forEach(function(el){io.observe(el)});
+  }
+
+  /* ---------- thesis tabs ---------- */
+  var ink=document.getElementById('tabInk');
+  function moveInk(){var t=document.querySelector('[role="tab"][aria-selected="true"][aria-controls^="p-"]');if(!t||!ink)return;ink.style.width=t.offsetWidth+'px';ink.style.transform='translateX('+t.offsetLeft+'px)';}
+  window.addEventListener('resize',moveInk); window.addEventListener('load',moveInk); setTimeout(moveInk,60);
+  var tabs=[].slice.call(document.querySelectorAll('[role="tab"][aria-controls^="p-"]'));
+  function openTab(t,focus){
+    tabs.forEach(function(x){var on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;var p=document.getElementById(x.getAttribute('aria-controls'));p.hidden=!on;p.classList.toggle('on',on);});
+    if(focus)t.focus(); moveInk();
+    var pid=t.getAttribute('aria-controls');
+    if(!reduce){ if(pid==='p-d')growBars(document.getElementById('p-d')); if(pid==='p-f')donut(); }
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){openTab(t)});
+    t.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'){e.preventDefault();openTab(tabs[(i+1)%tabs.length],true);}
+      if(e.key==='ArrowLeft'){e.preventDefault();openTab(tabs[(i-1+tabs.length)%tabs.length],true);}
+    });
+  });
+
+  /* ---------- pipeline steps ---------- */
+  var stepText=[
+    '<b>Explore the data.</b> Principal component analysis with PCAtools shows the main sources of variation in each species, so I can see outliers and batch effects before testing.',
+    '<b>Find disease genes in each species.</b> DESeq2 tests cases against controls inside each species, with adjustment for covariates.',
+    '<b>Join human and cat genes.</b> biomaRt maps one-to-one human–feline orthologues, so the two sets of results can be compared gene by gene.',
+    '<b>Read the biology.</b> BloodGen3Module and limma score blood transcriptional modules, and QIAGEN IPA tests pathways. This shows which immune programmes move together.',
+    '<b>Check cell composition.</b> CIBERSORTx estimates the proportions of leukocyte types. With feline clinical counts, this tests how much of the signal comes from changes in cell numbers.'
+  ];
+  var steps=[].slice.call(document.querySelectorAll('.step')), sd=document.getElementById('stepDetail');
+  function pick(i){steps.forEach(function(s,j){s.setAttribute('aria-pressed',j===i)});sd.innerHTML=stepText[i];}
+  steps.forEach(function(s,i){s.addEventListener('click',function(){pick(i)})}); pick(0);
+
+  /* ---------- project filters + expand ---------- */
+  var fbtn=[].slice.call(document.querySelectorAll('.filters button')), projs=[].slice.call(document.querySelectorAll('.proj'));
+  fbtn.forEach(function(b){b.addEventListener('click',function(){
+    var f=b.getAttribute('data-f'); fbtn.forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+    var k=0; projs.forEach(function(p){var show=(f==='all'||p.getAttribute('data-tags')===f);p.classList.toggle('hide',!show);p.classList.remove('enter');if(show&&!reduce){void p.offsetWidth;p.style.animationDelay=(k++*60)+'ms';p.classList.add('enter');}});
+  })});
+  fbtn[0].textContent='All ('+projs.length+')';
+  document.querySelectorAll('.proj .toggle[aria-controls]').forEach(function(b){b.addEventListener('click',function(){
+    var p=b.closest('.proj'),open=!p.classList.contains('open');p.classList.toggle('open',open);if(open&&!reduce)growBars(p);b.setAttribute('aria-expanded',open);b.textContent=open?'Hide details':'Show details';
+  })});
+
+  /* ---------- timeline ---------- */
+  var T=[
+    {d:'2021',t:'B.Tech starts',k:'study',h:'B.Tech Biotechnology begins',b:'Vellore Institute of Technology, India. Final GPA 3.97/4.'},
+    {d:'10/2023',t:'c-KIT project',k:'study',h:'First research project: c-KIT kinase in GIST',b:'Project lead at BPRI, Noida. Structural analysis and sunitinib docking.'},
+    {d:'02/2024',t:'JETIR paper',k:'award',h:'First-author paper published',b:'Krishnakumar P, Kumari U. JETIR 2024;11(2):c56–c65.'},
+    {d:'07/2024',t:'Tau thesis',k:'study',h:'Undergraduate thesis: chaperones and Tau',b:'Docking and affinity estimation of archaeal, human and E. coli chaperones with Tau. Supervisor: Dr C. Sudandiradoss.'},
+    {d:'09/2024',t:'Project award',k:'award',h:'Best Biotechnology Project Award',b:'Engineer\'s Day, VIT. Team bio-filter for metal-ion bioremediation. Also in Oct 2024: NPTEL Elite + Gold, Top 1%.'},
+    {d:'01/2025',t:'USV + HTT',k:'study',h:'Industry lab and Huntingtin project',b:'R&D intern at USV, Mumbai (antibody biosimilar cloning), and project lead on Huntingtin–HAP40 at BPRI.'},
+    {d:'09/2025',t:'Imperial',k:'study',h:'MSc Molecular Medicine begins',b:'Imperial College London. Elected Course Representative for the 37-student cohort. Oral talk at BioTrendz 2025.'},
+    {d:'12/2025',t:'Patent published',k:'award',h:'Patent application published',b:'Indian Patent Application No. 202511108447 A. Filed 08 Nov 2025; published 26 Dec 2025.'},
+    {d:'01/2026',t:'Best Paper',k:'award',h:'Best Paper Award',b:'International Conference on One Health, Tinsukia College, Assam, for the chaperone–Tau study (shared with M. Bora).'},
+    {d:'03/2026',t:'Frontiers review',k:'award',h:'Review published in Frontiers in Molecular Biosciences',b:'E3 ubiquitin ligases and targeted protein degradation. Thesis research on MIS-C and FIP begins.'},
+    {d:'06/2026',t:'Thesis poster',k:'study',h:'Thesis poster',b:'MSc Molecular Medicine Poster Session, Imperial College London. Speaker at the Master\'s Symposium in July.'},
+    {d:'09/2026',t:'MSc complete',k:'award',h:'MSc with Distinction',b:'Thesis submitted and defended. Final result: Distinction, with a Distinction for the research thesis.'}
+  ];
+  var track=document.getElementById('tlTrack'), card=document.getElementById('tlCard'), cur=T.length-1, items=[];
+  T.forEach(function(e,i){
+    var b=document.createElement('button');b.type='button';b.className='tl-item';b.setAttribute('role','tab');b.setAttribute('data-k',e.k);b.id='tl'+i;
+    b.innerHTML='<span class="tl-dot"></span><span class="d">'+e.d+'</span><span class="t">'+e.t+'</span>';
+    b.addEventListener('click',function(){sel(i,false)});
+    b.addEventListener('keydown',function(ev){if(ev.key==='ArrowRight'){ev.preventDefault();sel(Math.min(T.length-1,i+1),true)}if(ev.key==='ArrowLeft'){ev.preventDefault();sel(Math.max(0,i-1),true)}});
+    track.appendChild(b);items.push(b);
+  });
+  function sel(i,focus){
+    cur=i; items.forEach(function(b,j){b.setAttribute('aria-selected',j===i);b.tabIndex=j===i?0:-1;b.classList.toggle('past',j<i);});
+    var e=T[i]; card.style.borderLeftColor=e.k==='award'?'var(--feline)':'var(--blue)';
+    card.innerHTML='<span class="mono">'+e.d+'</span><h3>'+e.h+'</h3><p>'+e.b+'</p>';
+    var it=items[i]; track.scrollTo({left:it.offsetLeft-track.clientWidth/2+it.clientWidth/2,behavior:reduce?'auto':'smooth'});
+    if(focus)it.focus();
+  }
+  document.getElementById('tlPrev').addEventListener('click',function(){sel(Math.max(0,cur-1))});
+  document.getElementById('tlNext').addEventListener('click',function(){sel(Math.min(T.length-1,cur+1))});
+  sel(cur);
+
+
+  /* ---------- motion layer ---------- */
+  var bar=document.getElementById('progress'), top=document.getElementById('totop');
+  var navEl=document.querySelector('nav');
+  function onScroll(){var h=document.documentElement;navEl.classList.toggle('scrolled',h.scrollTop>10);var max=h.scrollHeight-h.clientHeight,p=max>0?h.scrollTop/max:0;bar.style.transform='scaleX('+p+')';top.classList.toggle('show',h.scrollTop>700);}
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  top.addEventListener('click',function(){window.scrollTo({top:0,behavior:reduce?'auto':'smooth'})});
+
+  /* rotating interests */
+  var words=['gene regulation','disease mechanisms','translational genetics','comparative transcriptomics'], wi=0, rot=document.getElementById('rot');
+  if(!reduce){setInterval(function(){rot.classList.add('out');setTimeout(function(){wi=(wi+1)%words.length;rot.textContent=words[wi];rot.classList.remove('out');},350);},2600);}
+  else{rot.textContent=words.slice(0,3).join(', ');}
+
+  /* scroll reveal: only for things below the first screen, so the first frame is complete */
+  document.querySelectorAll('.sg .chips-inline').forEach(function(g){[].forEach.call(g.children,function(c,i){c.style.setProperty('--i',i)})});
+  if(!reduce && 'IntersectionObserver' in window){
+    var rvSel='.sec-head,.explorer,.proj,.pub,.sg,.li,.talk,.tl,.filters,.contact .wrap > div';
+    var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target);}})},{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+    var vh=window.innerHeight;
+    document.querySelectorAll(rvSel).forEach(function(el){
+      if(el.getBoundingClientRect().top<vh)return;
+      var sib=el.parentElement?[].indexOf.call(el.parentElement.children,el):0;
+      el.style.transitionDelay=(Math.min(sib,5)*70)+'ms';
+      el.classList.add('rv'); ro.observe(el);
+    });
+  }
+
+  /* card tilt */
+  if(!reduce && matchMedia('(pointer:fine)').matches){
+    document.querySelectorAll('.proj').forEach(function(c){
+      c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+        c.style.setProperty('--mx',(x+.5)*100+'%');c.style.setProperty('--my',(y+.5)*100+'%');
+        if(!c.classList.contains('wide')){c.style.transition='transform .25s var(--ease),box-shadow .6s var(--ease)';c.style.transform='perspective(1000px) rotateX('+(-y*2.5)+'deg) rotateY('+(x*3)+'deg) translateY(-4px)';}});
+      c.addEventListener('pointerleave',function(){c.style.transition='';c.style.transform='';});
+    });
+  }
+
+  /* DNA helix in contact band */
+  var hx=document.getElementById('helix'), hc=hx.getContext('2d'), hw=0, hh=0, ph=0;
+  function hsize(){var r=hx.getBoundingClientRect();hw=r.width;hh=r.height;hx.width=hw*dpr;hx.height=hh*dpr;hc.setTransform(dpr,0,0,dpr,0,0);}
+  function hdraw(){
+    hc.clearRect(0,0,hw,hh);
+    var vertical=hh>=hw, L=vertical?hh:hw, A=(vertical?hw:hh)*0.32, C=(vertical?hw:hh)/2, n=22;
+    for(var i=0;i<n;i++){
+      var t=i/(n-1), pos=12+t*(L-24), a=t*Math.PI*3+ph, s1=Math.sin(a), s2=Math.sin(a+Math.PI), z1=Math.cos(a), z2=Math.cos(a+Math.PI);
+      var p1=C+s1*A, p2=C+s2*A;
+      var X1=vertical?p1:pos,Y1=vertical?pos:p1,X2=vertical?p2:pos,Y2=vertical?pos:p2;
+      hc.strokeStyle='rgba(255,255,255,.28)';hc.lineWidth=2;hc.beginPath();hc.moveTo(X1,Y1);hc.lineTo(X2,Y2);hc.stroke();
+      hc.fillStyle='rgba(255,255,255,'+(0.45+0.55*(z1+1)/2)+')';hc.beginPath();hc.arc(X1,Y1,3+2*(z1+1)/2,0,6.283);hc.fill();
+      hc.fillStyle='rgba(255,190,110,'+(0.45+0.55*(z2+1)/2)+')';hc.beginPath();hc.arc(X2,Y2,3+2*(z2+1)/2,0,6.283);hc.fill();
+    }
+  }
+  function hloop(){ph+=0.018;hdraw();requestAnimationFrame(hloop);}
+  hsize(); if(reduce)hdraw(); else hloop();
+  window.addEventListener('resize',function(){hsize();if(reduce)hdraw();});
+
+  /* ---------- nav highlight ---------- */
+  var links=[].slice.call(document.querySelectorAll('nav .menu a'));
+  if('IntersectionObserver' in window){
+    var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id)})}})},{rootMargin:'-45% 0px -50% 0px'});
+    links.forEach(function(a){var s=document.querySelector(a.getAttribute('href'));if(s)so.observe(s)});
+  }
+})();
+</script>
+</body>
+</html>
