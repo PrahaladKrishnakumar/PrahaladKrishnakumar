@@ -134,10 +134,16 @@ nav .menu a:hover::after,nav .menu a.on::after{transform:scaleX(1)}
 .step[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:var(--white)}
 .step[aria-pressed="true"] .k,.step[aria-pressed="true"] .cap{color:#D4E5FB}
 .step-detail{background:var(--tint);border-radius:14px;padding:16px 18px;border-left:4px solid var(--blue);min-height:84px}
-.donut-wrap{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
-.donut{width:170px;height:170px}
+.donut-wrap{display:grid;justify-items:center;text-align:center;gap:16px;padding:4px 0}
+.donut{width:min(210px,62%);height:auto;aspect-ratio:1}
 .donut .bg{stroke:var(--tint)} .donut .fg{stroke:var(--blue);transition:stroke-dashoffset 1.4s var(--ease)}
-.donut text{font-family:var(--font-display);font-weight:700;fill:var(--navy)}
+.donut text{font-family:var(--font-display);fill:var(--navy)}
+.donut .d-num{font-size:21px;font-weight:800;letter-spacing:-.02em}
+.donut .d-sub{font-family:var(--font-mono);font-size:7.4px;font-weight:500;fill:var(--muted);letter-spacing:.14em}
+.donut-cap{max-width:33ch;margin:0;color:var(--muted);font-size:.93rem;text-wrap:balance}
+.donut-cap b{color:var(--ink)}
+#p-f .two{align-items:center}
+@media (max-width:760px){.donut{width:min(190px,56%)}}
 .finding{display:grid;gap:10px}
 .finding li{margin:0}
 .chips-inline{display:flex;flex-wrap:wrap;gap:6px}
@@ -182,12 +188,37 @@ ul.clean{margin:0;padding-left:18px;display:grid;gap:6px}
 .proj.open .toggle::after{transform:rotate(180deg)}
 .proj .toggle{align-self:flex-start;background:none;border:0;color:var(--blue);font-weight:700;padding:4px 0}
 .dg{display:grid;gap:6px;margin-top:4px}
+.lig{display:grid;gap:7px;margin-top:6px}
+.lig-b{display:grid;grid-template-columns:132px 1fr 60px;gap:10px;align-items:center;width:100%;text-align:left;
+  background:none;border:1px solid transparent;border-radius:10px;padding:6px 8px;cursor:pointer;font:inherit;color:inherit;
+  transition:background .3s var(--ease),border-color .3s var(--ease)}
+.lig-b:hover{background:var(--tint)}
+.lig-b[aria-pressed="true"]{background:var(--tint);border-color:var(--rule)}
+.lig-name{font-size:.86rem;font-weight:600;color:var(--ink)}
+.lig-track{position:relative;height:10px;border-radius:999px;background:linear-gradient(90deg,#EAF2FC,#D6E4F4)}
+.lig-dot{position:absolute;top:50%;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;
+  background:var(--blue);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,30,70,.3);transition:transform .4s var(--ease)}
+.lig-dot.flag{background:var(--feline)}
+.lig-dot.pick{background:var(--blue);box-shadow:0 0 0 4px rgba(0,113,227,.22),0 1px 4px rgba(0,30,70,.3)}
+.lig-b:hover .lig-dot,.lig-b[aria-pressed="true"] .lig-dot{transform:scale(1.25)}
+.lig-val{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);text-align:right}
+.lig-scale{display:grid;grid-template-columns:132px 1fr 60px;gap:10px;padding:0 8px}
+.lig-scale > span:nth-child(2){display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.66rem;color:var(--muted)}
+.lig-scale em{font-style:normal}
+.lig-det{font-size:.9rem;color:var(--ink);background:var(--tint);border-left:3px solid var(--blue);border-radius:0 10px 10px 0;padding:10px 14px;margin:2px 0 0}
+.lig-cap{font-size:.74rem;color:var(--muted);margin:2px 0 0}
+@media (max-width:560px){.lig-b,.lig-scale{grid-template-columns:96px 1fr 52px;gap:7px}.lig-name{font-size:.78rem}}
+@media print{.lig-b{break-inside:avoid}.lig-det{background:none!important;border-left:1pt solid #999!important}}
 .dg .brow{grid-template-columns:104px 1fr auto;font-size:.85rem}.dg .n{white-space:nowrap}
 
 /* ---------- timeline: pinned rotating helix + milestone list ---------- */
 .hx{display:grid;grid-template-columns:280px minmax(0,1fr);gap:56px;align-items:start}
 .hx-stick{position:sticky;top:84px;height:min(72vh,640px);display:grid;grid-template-rows:1fr auto;gap:14px}
-.hx-canvas{width:100%;height:100%;display:block}
+.hx-canvas{width:100%;height:100%;display:block;touch-action:pan-y}
+@media (hover:hover) and (pointer:fine){.hx-canvas{cursor:grab}.hx-canvas:active{cursor:grabbing}}
+.hx-hint{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);opacity:.7;transition:opacity .6s var(--ease)}
+.hx-hint.gone{opacity:0}
+@media (hover:none),(pointer:coarse){.hx-hint{display:none}}
 .hx-label{display:grid;justify-items:center;gap:2px}
 .hx-date{font-family:var(--font-display);font-weight:800;font-size:1.9rem;letter-spacing:-.03em;color:var(--navy);transition:color .5s var(--ease)}
 
@@ -249,7 +280,7 @@ ul.clean{margin:0;padding-left:18px;display:grid;gap:6px}
 .li:hover{background:var(--white);transform:translateX(4px);box-shadow:var(--shadow)}
 .li:hover::before{width:5px;box-shadow:0 0 12px rgba(0,113,227,.35)}
 .li.award:hover::before{box-shadow:0 0 12px rgba(224,138,30,.4)}
-.li:hover h3{color:var(--blue)}
+.li:hover h3{color:var(--blue);font-weight:800}
 .li h3{transition:color .35s var(--ease)}
 .li .mono{transition:color .35s}
 /* entrance: columns rise one after another, bars draw down, then text slides in */
@@ -272,14 +303,56 @@ ul.clean{margin:0;padding-left:18px;display:grid;gap:6px}
 @media (prefers-reduced-motion: reduce){.bg-wait .subhead,.bg-wait .li{opacity:1;transform:none}.bg-wait .li::before,.bg-wait .subhead::after{transform:none}}
 @media print{.li,.li::before,.subhead,.subhead::after{animation:none!important;opacity:1!important;transform:none!important}}
 .li p{font-size:.92rem;color:var(--muted)}
-.talks{display:grid;gap:12px}
-.talk{display:grid;grid-template-columns:120px 1fr;gap:14px;font-size:.95rem;padding:12px 14px;border-bottom:1px solid var(--rule);border-radius:10px;transition:background .4s var(--ease)}
-.talk:hover{background:var(--white)}
-@media (max-width:620px){.talk{grid-template-columns:1fr;gap:2px}}
+.poslist{display:grid;gap:14px;margin:4px 0 30px}
+.pos{display:grid;grid-template-columns:118px 1.05fr 1.25fr;gap:16px;align-items:start;position:relative;
+  padding:10px 12px 10px 18px;border-radius:12px;
+  transition:background .45s var(--ease),transform .5s var(--ease),box-shadow .5s var(--ease)}
+.pos::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:3px;background:var(--blue);
+  transition:width .4s var(--ease),box-shadow .4s var(--ease)}
+.pos.now::before{background:var(--feline)}
+.pos:hover{background:var(--white);transform:translateX(4px);box-shadow:var(--shadow)}
+.pos:hover::before{width:5px;box-shadow:0 0 12px rgba(0,113,227,.35)}
+.pos.now:hover::before{box-shadow:0 0 12px rgba(224,138,30,.4)}
+.pos > .mono{color:var(--muted);font-size:.78rem;padding-top:2px}
+.pos-r{display:grid;gap:2px}
+.pos-r b{font-size:.97rem;color:var(--ink);font-weight:700;transition:color .35s var(--ease)}
+.pos:hover .pos-r b,.pos:focus-within .pos-r b{color:var(--blue);font-weight:800}
+.pos > .mono{transition:color .35s var(--ease)}
+.pos:hover > .mono{color:var(--navy)}
+.pos-r span{font-size:.86rem;color:var(--muted)}
+.pos-d{font-size:.9rem;color:var(--ink)}
+.pos-d em{font-style:normal;color:var(--muted)}
+@media (max-width:880px){.pos{grid-template-columns:110px 1fr;gap:6px 14px}.pos-d{grid-column:2}}
+@media (max-width:520px){.pos{grid-template-columns:1fr;gap:4px}.pos-d{grid-column:1}}
+@media print{.pos{padding:3pt 0 3pt 7pt!important;grid-template-columns:70pt 1fr 1.2fr!important;break-inside:avoid}
+  .pos::before{background:#0071E3!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .poslist{gap:4pt!important;margin-bottom:10pt!important}}
+.talks{display:grid;gap:16px}
+.talk{display:grid;grid-template-columns:92px 86px 1fr;gap:14px;font-size:.95rem;padding:10px 12px 10px 18px;position:relative;border-radius:12px;transition:background .45s var(--ease),transform .5s var(--ease),box-shadow .5s var(--ease)}
+.talk::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:3px;background:var(--blue);transition:width .4s var(--ease),box-shadow .4s var(--ease)}
+.talk.invited::before{background:var(--feline)}
+.talk:hover{background:var(--white);transform:translateX(4px);box-shadow:var(--shadow)}
+.talk:hover::before{width:5px;box-shadow:0 0 12px rgba(0,113,227,.35)}
+.talk.invited:hover::before{box-shadow:0 0 12px rgba(224,138,30,.4)}
+.talk .mono{color:var(--muted)}
+.tt{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;align-self:start;justify-self:start;padding:3px 9px;border-radius:999px;background:var(--tint);color:var(--navy);border:1px solid var(--rule);white-space:nowrap}
+.tt.inv{background:#FFF3E2;color:#8a5207;border-color:#F3DCBC}
+.talk cite{font-style:italic}
+.talk .note{color:var(--muted)}
+@media (max-width:760px){.talk{grid-template-columns:86px 1fr;gap:6px 12px}.tt{grid-column:2}.talk > :last-child{grid-column:1/-1}}
+@media (max-width:460px){.talk{grid-template-columns:1fr;gap:5px}.tt{grid-column:1}.talk > :last-child{grid-column:1}}
 .contact{background:var(--blue);color:var(--white);text-align:left}
 .contact h2{color:var(--white)}
 .contact p{color:#E2EEFC}
 .contact .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;align-items:center}
+.c-lead{font-family:var(--font-display);font-weight:800;font-size:clamp(1.25rem,2.5vw,1.85rem);line-height:1.25;letter-spacing:-.02em;margin:12px 0 0;color:#fff!important;text-wrap:balance;max-width:24ch}
+.c-sub{margin:12px 0 0;max-width:46ch}
+.clinks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:22px;max-width:620px}
+.clink{display:grid;gap:3px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:#fff;text-decoration:none;transition:background .4s var(--ease),transform .5s var(--ease),border-color .4s var(--ease),box-shadow .5s var(--ease)}
+.clink b{font-size:.97rem;letter-spacing:-.01em}
+.clink span{font-family:var(--font-mono);font-size:.71rem;color:#CFE4FB;word-break:break-word}
+.clink:hover,.clink:focus-visible{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.6);transform:translateY(-3px);box-shadow:0 10px 26px rgba(0,20,45,.22)}
+@media (max-width:520px){.clinks{grid-template-columns:1fr}}
 footer{background:var(--navy);color:#C4DCFB;font-size:.85rem;padding:18px 0}
 .toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:rgba(0,52,110,.92);backdrop-filter:blur(8px);color:#fff;padding:11px 18px;border-radius:999px;box-shadow:0 12px 30px rgba(0,26,56,.3);font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .4s var(--ease),transform .5s var(--ease);z-index:50}
 .toast.show{opacity:1;transform:translate(-50%,0)}
@@ -326,10 +399,49 @@ footer{background:var(--navy);color:#C4DCFB;font-size:.85rem;padding:18px 0}
 .step-detail{animation:fadeSlide .35s both}
 .sg .chips-inline span{transition:transform .6s var(--ease),opacity .6s var(--ease),background .3s,color .3s;transition-delay:calc(var(--i,0) * 35ms)}
 .sg.rv .chips-inline span{opacity:0;transform:scale(.7)}
+.sg.js-scatter .chips-inline span{opacity:1;transform:none;transition:none}
 .sg.rv.in .chips-inline span{opacity:1;transform:none}
+
+/* scroll-driven pixel scatter: the chips fly apart as the section leaves the
+   viewport and reassemble as it comes back. Native scroll timeline only, so there
+   is no JavaScript running per frame, and it is off entirely for reduced motion. */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    .sg .chips-inline span{
+      animation:pxIn linear both,pxOut linear both;
+      animation-timeline:view(),view();
+      animation-range:entry 0% entry 100%,exit 0% exit 100%;
+      will-change:transform,opacity;
+    }
+    .sg.rv .chips-inline span,.sg.rv.in .chips-inline span{opacity:unset;transform:unset}
+    @keyframes pxIn{
+      from{opacity:0;transform:translate3d(var(--dx,0px),var(--dy,0px),0) scale(.6) rotate(var(--rot,0deg))}
+      to{opacity:1;transform:none}
+    }
+    @keyframes pxOut{
+      from{opacity:1;transform:none}
+      to{opacity:0;transform:translate3d(calc(var(--dx,0px)*-1),calc(var(--dy,0px)*-1),0) scale(.6) rotate(calc(var(--rot,0deg)*-1))}
+    }
+  }
+}
 .sg .chips-inline span:hover{background:var(--blue);color:#fff}
 .contact .wrap{display:grid;grid-template-columns:1fr 220px;gap:24px;align-items:center}
 #helix{width:220px;height:260px;display:block}
+.netbg{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0}
+/* ===== Scientific background layers (original line art, decorative) ===== */
+.sci-bg{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;user-select:none;z-index:0;color:var(--navy);opacity:.058;overflow:hidden}
+.sci-sketch{opacity:.075}
+.sb-eq{font-family:var(--font-display);font-size:34px;font-weight:700;letter-spacing:-.01em}
+.sb-eq2{font-family:var(--font-display);font-size:28px;font-weight:700}
+.sb-sub{font-family:var(--font-display);font-size:19px;font-weight:700}
+.sb-note{font-family:var(--font-mono);font-size:17px}
+.sb-ax{font-family:var(--font-mono);font-size:16px;letter-spacing:.08em;text-transform:uppercase}
+#skills,#gallery{position:relative;isolation:isolate}
+#skills>.wrap,#gallery>.wrap{position:relative;z-index:1}
+@media (max-width:760px){.sci-bg{opacity:.042}.sci-sketch{opacity:.058}}
+@media print{.sci-bg{display:none!important}}
+#contact,#recommendations{position:relative}
+#contact .wrap,#recommendations .wrap{position:relative;z-index:1}
 @media (max-width:760px){.contact .wrap{grid-template-columns:1fr}#helix{width:100%;height:160px}}
 .totop{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:1.2rem;box-shadow:0 8px 20px rgba(0,52,110,.3);opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .3s,transform .3s;z-index:30}
 .totop.show{opacity:1;transform:none;pointer-events:auto}
@@ -421,14 +533,22 @@ section:target .sec-head h2::after{animation:underline 1s .15s var(--ease) both}
   .sg .chips-inline span{opacity:1!important;transform:none!important;background:#fff!important;border:0.5pt solid #D6E4F4;padding:1pt 5pt!important}
   .cols3{grid-template-columns:repeat(3,1fr)!important;gap:12pt!important}
   .contact{color:#000;padding-top:6pt!important}
+  .c-lead{font-size:11pt!important;color:#000!important;max-width:none!important}
+  .c-sub{color:#333!important}
+  .clinks{grid-template-columns:1fr 1fr!important;gap:3pt!important;margin-top:8pt!important;max-width:none!important}
+  .clink{background:none!important;border:0!important;color:#000!important;padding:0!important}
+  .clink span{color:#444!important}
   .contact h2{color:#00346E}
   .contact p{color:#000!important}
   .contact .wrap{display:block}
   #helix{display:none!important}
+  .hx-hint{display:none!important}
   #journey{display:none!important}
   .big-q{font-size:12pt!important}
   .talks{gap:0!important}
-  .talk{padding:3pt 0!important}
+  .talk{padding:3pt 0 3pt 7pt!important;grid-template-columns:72pt 54pt 1fr!important}
+  .talk::before{background:#0071E3!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tt{border:0.5pt solid #C5D9F0!important;background:#fff!important}
   .two{gap:10pt!important}
   .dz{padding:6pt!important}
   .donut{width:110px;height:110px}
@@ -436,7 +556,7 @@ section:target .sec-head h2::after{animation:underline 1s .15s var(--ease) both}
 }
 
 /* ===== Gallery: alternating image / text rows ===== */
-.g-list{display:grid;gap:72px;counter-reset:g}
+.g-list{display:grid;gap:72px;counter-reset:g;overflow-x:clip;overflow-clip-margin:28px}
 .g-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:56px;align-items:center;counter-increment:g}
 .g-row:nth-child(even) .g-media{order:2}
 @media (max-width:760px){.g-list{gap:48px}.g-row{grid-template-columns:1fr;gap:20px}.g-row:nth-child(even) .g-media{order:0}}
@@ -454,8 +574,6 @@ section:target .sec-head h2::after{animation:underline 1s .15s var(--ease) both}
 .g-text h3{font-size:clamp(1.35rem,2.6vw,1.75rem);font-weight:800;letter-spacing:-.025em;color:var(--navy)}
 .g-text .when{font-family:var(--font-mono);font-size:.8rem;color:var(--blue)}
 .g-text p{color:var(--ink);max-width:52ch}
-.g-text .facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.g-text .facts span{font-size:.8rem;font-weight:700;padding:5px 12px;border-radius:999px;background:var(--white);border:1px solid var(--rule);color:var(--navy)}
 .g-row.rv .g-media{transform:translateX(-36px);opacity:0;transition:transform 1s var(--ease),opacity 1s var(--ease)}
 .g-row.rv:nth-child(even) .g-media{transform:translateX(36px)}
 .g-row.rv.in .g-media{transform:none;opacity:1}
@@ -496,10 +614,17 @@ section:target .sec-head h2::after{animation:underline 1s .15s var(--ease) both}
 .proj.clickable:hover .toggle{text-decoration:underline;text-underline-offset:3px}
 .pm{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:24px;background:rgba(0,20,45,0);backdrop-filter:blur(0px);pointer-events:none;transition:background .5s var(--ease),backdrop-filter .5s var(--ease)}
 .pm.open{background:rgba(0,20,45,.45);backdrop-filter:blur(6px);pointer-events:auto}
-.pm-card{position:relative;width:min(720px,100%);max-height:86vh;overflow:auto;background:var(--white);border-radius:24px;box-shadow:0 40px 90px rgba(0,26,56,.35);padding:34px 36px 26px;transform-origin:0 0;opacity:0}
+.pm-card{position:relative;width:min(720px,100%);max-height:86vh;overflow:hidden;background:var(--white);border-radius:24px;box-shadow:0 40px 90px rgba(0,26,56,.35);transform-origin:0 0;opacity:0;display:flex;flex-direction:column}
+/* the scroll lives on an inner element so the card can clip it: a native scrollbar
+   on the card itself paints into the 24px corners and chains to the page at each end. */
+.pm-scroll{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:34px 36px 26px;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:var(--rule) transparent}
+.pm-scroll::-webkit-scrollbar{width:10px}
+.pm-scroll::-webkit-scrollbar-track{background:transparent;margin:14px 0}
+.pm-scroll::-webkit-scrollbar-thumb{background:#CBDCF0;border-radius:999px;border:3px solid var(--white)}
+.pm-scroll::-webkit-scrollbar-thumb:hover{background:#AFCBEA}
 .pm.open .pm-card{opacity:1}
 .pm-card.anim{transition:transform .6s var(--ease),opacity .35s var(--ease)}
-.pm-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;border:1px solid var(--rule);background:var(--white);color:var(--navy);font-size:1rem;transition:background .3s,transform .4s var(--ease)}
+.pm-close{position:absolute;top:16px;right:18px;z-index:3;width:40px;height:40px;border-radius:50%;border:1px solid var(--rule);background:var(--white);color:var(--navy);font-size:1rem;transition:background .3s,transform .4s var(--ease)}
 .pm-close:hover{background:var(--tint);transform:rotate(90deg)}
 .pm-body{display:grid;gap:14px}
 .pm-body .meta .mono{font-size:.82rem}
@@ -508,6 +633,14 @@ section:target .sec-head h2::after{animation:underline 1s .15s var(--ease) both}
 .pm-body .lead{font-size:1.05rem;color:var(--ink)}
 .pm-body .detail{display:grid;gap:10px;padding-top:14px;border-top:1px solid var(--rule)}
 .pm-body .detail p{color:var(--ink)}
+.pp{display:grid;gap:5px}
+.pp+.pp{margin-top:14px}
+.pp .pl{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:600;margin:0}
+.pp p{margin:0}
+.pp ul{margin:2px 0 0;padding-left:1.15em;display:grid;gap:5px}
+.pp li{color:var(--ink)}
+.pp .dg{margin-top:4px}
+@media print{.pp .pl{color:#00346E!important;font-size:7pt}.pp+.pp{margin-top:6pt}}
 .pm-body > *{animation:teLine .6s var(--ease) both}
 .pm-body > :nth-child(2){animation-delay:.05s}.pm-body > :nth-child(3){animation-delay:.1s}.pm-body > :nth-child(4){animation-delay:.15s}.pm-body > :nth-child(5){animation-delay:.2s}
 .pm-nav{display:flex;justify-content:space-between;gap:10px;margin-top:22px;padding-top:16px;border-top:1px solid var(--rule)}
@@ -539,7 +672,9 @@ section:target .sec-head h2::after{animation:underline 1s .15s var(--ease) both}
 .rq.on{animation:rqIn .7s var(--ease) both}
 @keyframes rqIn{from{opacity:0;transform:translateY(14px) scale(.985);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
 .rq .rc-mark{position:absolute;top:14px;left:30px;font-family:Georgia,serif;font-size:8rem;line-height:1;color:var(--blue);opacity:.12;pointer-events:none}
-.rq-pull{margin:0;font-family:var(--font-display);font-weight:800;font-size:clamp(1.3rem,2.4vw,1.75rem);line-height:1.3;letter-spacing:-.02em;color:var(--navy);text-wrap:balance;max-width:34ch;position:relative}
+.rp.sup .rp-bar{background:var(--feline)}
+.rq-pull{margin:0;font-family:var(--font-display);font-weight:800;font-size:clamp(1.12rem,2vw,1.5rem);line-height:1.35;letter-spacing:-.02em;color:var(--navy);text-wrap:nowrap;position:relative}
+@media (max-width:560px){.rq-pull{text-wrap:balance}}
 .rq-full{margin:0;display:grid;gap:10px;font-size:1rem;line-height:1.7;color:var(--muted);max-width:68ch;position:relative;max-height:9.8em;overflow:hidden;transition:max-height .7s var(--ease)}
 .rq-full::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3.4em;background:linear-gradient(transparent,var(--white));transition:opacity .4s}
 .rq-full.open{max-height:80em}
@@ -622,7 +757,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
         <a class="btn ghost" href="#projects">See all projects</a>
       </div>
       <div class="profiles">
-        <a href="https://www.linkedin.com/in/prahalad-computationalbiology">LinkedIn</a>
+        <a href="https://www.linkedin.com/in/prahalad-krishnakumar">LinkedIn</a>
         <a href="https://orcid.org/0009-0003-1769-5902">ORCID</a>
         <a href="https://scholar.google.com/citations?hl=en&amp;user=1g_hAOQAAAAJ">Google Scholar</a>
       </div>
@@ -631,7 +766,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
       <p class="glance-h">At a glance</p>
       <div class="stats">
     <div class="stat"><b data-count="3">3</b><span>published outputs: 2 papers, 1 patent application</span></div>
-    <div class="stat"><b data-count="7">7</b><span>research projects, including the MSc thesis</span></div>
+    <div class="stat"><b data-count="9">9</b><span>research projects, including the MSc thesis</span></div>
     <div class="stat"><b data-count="3">3</b><span>awards</span></div>
     <div class="stat"><b data-count="7">7</b><span>talks and posters</span></div>
   </div>
@@ -652,7 +787,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
       <div class="ex-top">
         <span class="eyebrow">Imperial College London · in collaboration with LMU Munich</span>
         <h3>Cross-species comparative blood transcriptomics of human MIS-C and feline infectious peritonitis</h3>
-        <p>Supervisors: Dr Aubrey Cunnington and Dr Claire Dunican<br>Thesis grade: Distinction · Manuscript in preparation</p>
+        <p>Supervisors: Prof. Aubrey Cunnington and Dr Claire Dunican<br>Thesis grade: Distinction · Manuscript in preparation</p>
       </div>
       <div class="tabs" role="tablist" aria-label="Thesis explorer">
         <button role="tab" id="t-q" aria-controls="p-q" aria-selected="true"><span class="num">01</span>Question</button>
@@ -708,12 +843,13 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
       <div class="panel" role="tabpanel" id="p-f" data-print="04 · Findings" aria-labelledby="t-f" hidden>
         <div class="two">
           <div class="donut-wrap">
-            <svg class="donut" viewBox="0 0 120 120" role="img" aria-label="81.4 percent directional concordance">
-              <circle class="bg" cx="60" cy="60" r="50" fill="none" stroke-width="14"/>
-              <circle class="fg" id="donutFg" cx="60" cy="60" r="50" fill="none" stroke-width="14" stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="314.16" stroke-dashoffset="58.44"/>
-              <text x="60" y="66" text-anchor="middle" font-size="22">81.4%</text>
+            <svg class="donut" viewBox="0 0 120 120" role="img" aria-label="81.4 per cent of 3,262 orthologue pairs significant in both species change in the same direction">
+              <circle class="bg" cx="60" cy="60" r="50" fill="none" stroke-width="13"/>
+              <circle class="fg" id="donutFg" cx="60" cy="60" r="50" fill="none" stroke-width="13" stroke-linecap="round" transform="rotate(-90 60 60)" stroke-dasharray="314.16" stroke-dashoffset="58.44"/>
+              <text class="d-num" x="60" y="59" text-anchor="middle">81.4%</text>
+              <text class="d-sub" x="60" y="73" text-anchor="middle">SAME DIRECTION</text>
             </svg>
-            <p style="max-width:28ch">Of <b>3,262</b> orthologue pairs that are significant in both species, <b>81.4%</b> change in the same direction.</p>
+            <p class="donut-cap">Of <b>3,262</b> orthologue pairs significant in both species, <b>81.4%</b> change in the same direction.</p>
           </div>
           <div class="finding">
             <h3>What the two diseases share, and where they differ</h3>
@@ -748,10 +884,25 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
     <div class="sec-head">
       <p class="eyebrow">Research projects</p>
       <h2>Computation and the bench</h2>
-      <p>Filter by approach. Select any project to open its methods and results.</p>
+      <p>Eight research positions since 2023, across five organisations in the United Kingdom and India. The cards below give the aim, methods, results and interpretation for each piece of work.</p>
     </div>
+
+    <h3 class="subhead">Research positions</h3>
+    <div class="poslist">
+      <div class="pos now"><span class="mono">11/2026 – present</span><span class="pos-r"><b>AI/ML Researcher</b><span>Bioinformatics Project Research Institute, Noida, India</span></span><span class="pos-d">Multi-modal framework for non-small cell lung cancer. <em>Supervisor: Dr Uma Kumari.</em></span></div>
+      <div class="pos"><span class="mono">03/2026 – 09/2026</span><span class="pos-r"><b>MSc research project</b><span>Imperial College London · Section of Paediatrics and Child Health</span></span><span class="pos-d">Cross-species blood transcriptomics of MIS-C and FIP, with LMU Munich. Awarded a Distinction. <em>Supervisors: Prof. Aubrey Cunnington and Dr Claire Dunican.</em></span></div>
+      <div class="pos"><span class="mono">05/2023 – 03/2026</span><span class="pos-r"><b>Research collaborator</b><span>Vellore Institute of Technology, India</span></span><span class="pos-d">E3 ubiquitin ligase review, through to publication in <i>Frontiers in Molecular Biosciences</i>. <em>Supervisor: Dr C. Sudandiradoss.</em></span></div>
+      <div class="pos"><span class="mono">01/2025 – 05/2025</span><span class="pos-r"><b>Research intern, project lead</b><span>Bioinformatics Project Research Institute, Noida, India</span></span><span class="pos-d">Huntingtin–HAP40 complex; Indian patent application filed. <em>Supervisor: Dr Uma Kumari.</em></span></div>
+      <div class="pos"><span class="mono">01/2025 – 04/2025</span><span class="pos-r"><b>R&amp;D intern, full time</b><span>USV Private Limited, Mumbai, India</span></span><span class="pos-d">B.Tech capstone. Expression constructs for two EMEA antibody biosimilar programmes. <em>Supervisors: Dr Shardul Salunkhe and Anjali Rakesh Chutke.</em></span></div>
+      <div class="pos"><span class="mono">07/2024 – 11/2024</span><span class="pos-r"><b>Undergraduate thesis</b><span>Vellore Institute of Technology, India</span></span><span class="pos-d">Chaperone binding to Tau across three domains of life. Best Paper Award, One Health conference. <em>Supervisor: Dr C. Sudandiradoss.</em></span></div>
+      <div class="pos"><span class="mono">10/2023 – 01/2024</span><span class="pos-r"><b>Research intern, first author</b><span>Bioinformatics Project Research Institute, Noida, India</span></span><span class="pos-d">c-KIT kinase in gastrointestinal stromal tumour; first-author paper in JETIR. <em>Supervisor: Dr Uma Kumari.</em></span></div>
+      <div class="pos"><span class="mono">09/2023 – 10/2023</span><span class="pos-r"><b>Clinical laboratory intern</b><span>Jaslok Hospital, Mumbai, India</span></span><span class="pos-d">Transplant immunology. HLA typing, crossmatching and donor-specific antibody monitoring. Credit-bearing VIT placement.</span></div>
+    </div>
+
+    <h3 class="subhead">Projects</h3>
+    <p class="cap" style="margin:-4px 0 14px">Filter by approach. Select any project for its full detail.</p>
     <div class="filters" role="group" aria-label="Filter projects">
-      <button type="button" aria-pressed="true" data-f="all">All (6)</button>
+      <button type="button" aria-pressed="true" data-f="all">All (9)</button>
       <button type="button" aria-pressed="false" data-f="omics">Transcriptomics</button>
       <button type="button" aria-pressed="false" data-f="struct">Structural bioinformatics &amp; drug design</button>
       <button type="button" aria-pressed="false" data-f="wet">Wet lab</button>
@@ -761,74 +912,211 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
         <div class="wide-main">
           <p class="meta"><span class="mono">03/2026 – 09/2026</span><span class="org">Imperial College London · MSc thesis · Featured</span></p>
           <h3>MIS-C and FIP blood transcriptomics</h3>
-          <p>Cross-species comparison of 102 blood transcriptomes from children and cats. 81.4% of 3,262 shared significant orthologue pairs change in the same direction.</p>
+          <p>Do children with MIS-C and cats with FIP mount a shared blood transcriptional response to coronavirus infection?</p>
+          <p>102 whole-blood transcriptomes: 38 MIS-C cases against 42 paediatric controls, and 17 FIP cases against 5 feline controls. Of 3,262 orthologue pairs significant in both species, 81.4% changed in the same direction. The thesis explorer sets out the question, data, pipeline, findings and limitations in full.</p>
           <div class="tags"><span class="pill">Differential expression analysis</span><span class="pill">Cross-species orthologue mapping</span><span class="pill">Immune cell deconvolution</span><span class="pill">Pathway and module analysis</span></div>
         </div>
         <a class="btn-line" href="#thesis">Open the thesis explorer ↑</a>
       </article>
+
+      <article class="proj" data-tags="omics struct">
+        <p class="meta"><span class="mono">11/2026 – present</span><span class="org">BPRI, Noida · Current work</span></p>
+        <h3>Multi-modal AI/ML for non-small cell lung cancer</h3>
+        <p>Can transcriptomic, chemical and protein-sequence evidence be combined into one model of non-small cell lung cancer?</p>
+        <div class="tags"><span class="pill">Transcriptomic biomarker discovery</span><span class="pill">Drug-interaction modelling</span><span class="pill">Protein language models</span></div>
+        <div class="more" id="m7"><div class="more-in">
+          <div class="pp"><p class="pl">Background and rationale</p>
+            <p>Non-small cell lung cancer accounts for most lung cancer diagnoses, and several of its drivers are kinases that existing inhibitors already target. Biomarker discovery, drug-interaction modelling and protein function prediction are normally done separately, each on a single data type. A framework that links the three could carry a finding from an expression signature through to a druggable target and a predicted function in one pass.</p></div>
+          <div class="pp"><p class="pl">Methodology</p>
+            <p>Building an integrative framework across three strands: transcriptomic biomarker discovery, kinase-targeted drug-interaction modelling, and protein function prediction with protein language models.</p></div>
+          <div class="pp"><p class="pl">Status</p>
+            <p>In progress since November 2026.</p></div>
+          <div class="pp"><p class="pl">Output</p>
+            <p>Ongoing. Supervisor: Dr Uma Kumari.</p></div>
+        </div></div>
+        <button class="toggle" type="button" aria-haspopup="dialog" data-pm="m7">View details</button>
+      </article>
+
       <article class="proj" data-tags="struct">
         <p class="meta"><span class="mono">01/2025 – 05/2025</span><span class="org">BPRI, Noida · Project lead</span></p>
         <h3>Huntingtin–HAP40 complex</h3>
-        <p>A computational workflow to find small molecules that bind the Huntingtin–HAP40 complex, with a PROTAC strategy for later tests.</p>
+        <p>Can a small molecule be identified that binds the huntingtin–HAP40 complex and offers a route to lowering mutant huntingtin?</p>
         <div class="tags"><span class="pill">Structure quality checks</span><span class="pill">Virtual screening</span><span class="pill">Toxicity and BBB prediction</span></div>
         <div class="more" id="m1"><div class="more-in">
-          <p>Built a workflow for the complex (PDB 6X9O) and automated structural-quality checks with a custom Biopython script.</p><p>Prioritised epigallocatechin by AutoDock Vina screening and BBB-permeability and toxicity prediction.</p><p>Output: Indian patent application 202511108447 A; oral presentation at BioTrendz 2025. Supervisor: Dr Uma Kumari.</p>
+          <div class="pp"><p class="pl">Background and rationale</p>
+            <p>HAP40 binds huntingtin and stabilises it in a defined conformation. Elevated HAP40 promotes clearance of mutant huntingtin aggregates and improves motor and behavioural deficits in mouse models, whereas <i>Hap40</i> knockdown exacerbates aggregation and neurodegeneration (<a href="https://www.nature.com/articles/s41419-024-06716-4" target="_blank" rel="noopener">1</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/34390835/" target="_blank" rel="noopener">2</a>). The interface between the two proteins is therefore a candidate site for small-molecule intervention.</p></div>
+          <div class="pp"><p class="pl">Methodology</p>
+            <p>The workflow comprised six stages: structural data retrieval and validation; sequence alignment and domain analysis; structural characterisation and visualisation; structural and functional annotation; computer-aided drug design; and predicted toxicity assessment in neural tissue. Structure-quality checks were automated in a custom Biopython script.</p></div>
+          <div class="pp"><p class="pl">Results</p>
+            <p><b>Structural validation.</b> The complex (PDB 6X9O) satisfied quality criteria: 0.1% of residues occupied disallowed Ramachandran regions (VAL2250, HIS1918, SER309), and the RMSD against 8VLX was 0.48 Å. InterProScan identified three disordered regions, spanning residues 14–87, 419–484 and 1178–1227. The maximum B-factor, 95.44 Å², occurred at HIS1512 within an 'RYHSKQ' cassette of the N-terminal HEAT repeat. Cavity detection returned ten druggable pores with hydrophilic linings (radius 1.17–2.31 Å; length 33.1–352.6 Å).</p>
+            <p><b>Virtual screening and predicted toxicity.</b> Blind docking in CB-Dock2, with each ligand then screened for predicted toxicity in neural tissue. Select a ligand to see its profile. All four were predicted to be blood–brain barrier permeant.</p>
+            <div class="lig" data-lig>
+              <button class="lig-b" type="button" data-l="0" aria-pressed="false"><span class="lig-name">Withanolide D</span><span class="lig-track"><i class="lig-dot flag" style="left:85.7%"></i></span><span class="lig-val">−10.6</span></button>
+              <button class="lig-b" type="button" data-l="1" aria-pressed="false"><span class="lig-name">Ginsenosides</span><span class="lig-track"><i class="lig-dot flag" style="left:52.4%"></i></span><span class="lig-val">−9.9</span></button>
+              <button class="lig-b" type="button" data-l="2" aria-pressed="false"><span class="lig-name">Branaplam</span><span class="lig-track"><i class="lig-dot flag" style="left:42.9%"></i></span><span class="lig-val">−9.7</span></button>
+              <button class="lig-b" type="button" data-l="3" aria-pressed="true"><span class="lig-name">Epigallocatechin</span><span class="lig-track"><i class="lig-dot pick" style="left:9.5%"></i></span><span class="lig-val">−9.0</span></button>
+              <div class="lig-scale"><span></span><span><em>−8.8</em><em>−9.5</em><em>−10.2</em><em>−10.9</em></span><span></span></div>
+              <p class="lig-cap">Vina score, kcal/mol. Further right means stronger predicted binding. Amber marks a ligand with a predicted toxicity flag.</p>
+              <p class="lig-det" data-det>Weakest predicted binding of the four, 1.6 kcal/mol behind withanolide D — and the only ligand returned inactive for both neurotoxicity (p = 0.90) and cytotoxicity (p = 0.84). Lowest lipophilicity of the series (logP 1.25; TPSA 130.61 Å²). This is the one I took forward.</p>
+            </div></div>
+          <div class="pp"><p class="pl">Interpretation</p>
+            <p>Epigallocatechin was prioritised despite returning the weakest docking score, 1.6 kcal/mol below withanolide D, because it was the only ligand predicted inactive for both neurotoxicity and cytotoxicity. For a central-nervous-system target requiring chronic administration, a 1.6 kcal/mol difference in predicted affinity is unlikely to outweigh a cytotoxicity probability of 0.98.</p>
+            <p>The flexible, charged cassette further provides an attachment point for an E3-ligase-recruiting motif, which would permit a PROTAC or molecular-glue strategy directed at degradation of mutant huntingtin rather than inhibition.</p>
+            <p>All values reported are computational predictions and require experimental validation.</p></div>
+          <div class="pp"><p class="pl">Output</p>
+            <p>Indian patent application 202511108447 A. Oral presentation, BioTrendz 2025. Supervisor: Dr Uma Kumari. Co-investigators: Archit Raj M and Radha Chandar.</p></div>
         </div></div>
         <button class="toggle" type="button" aria-haspopup="dialog" data-pm="m1">View details</button>
       </article>
+
       <article class="proj" data-tags="struct">
         <p class="meta"><span class="mono">07/2024 – 11/2024</span><span class="org">VIT, Vellore · Undergraduate thesis</span></p>
         <h3>Chaperone binding to Tau</h3>
-        <p>Which chaperone binds Tau most strongly? I compared archaeal, human and <i>E. coli</i> chaperones by docking.</p>
+        <p>Which chaperone binds Tau most strongly, and can that interface be reused as the basis for a Tau-targeting delivery protein?</p>
         <div class="tags"><span class="pill">Structural model assessment</span><span class="pill">Protein–protein docking</span><span class="pill">Binding affinity prediction</span></div>
         <div class="more" id="m2"><div class="more-in">
-          <div class="dg" role="img" aria-label="Predicted binding free energy: E. coli Hsp33 minus 16.0, human Hsp70 minus 9.1 kilocalories per mole">
+          <div class="pp"><p class="pl">Background and rationale</p>
+            <p>Tau stabilises neuronal microtubules. Hyperphosphorylation promotes its aggregation into neurofibrillary tangles and disrupts axonal transport. Molecular chaperones bind unfolded substrates and suppress aggregation, and are therefore candidate therapeutic agents in Alzheimer disease.</p>
+            <p>Chaperones examined for this purpose are drawn from mammals and eubacteria — Hsp27, αB-crystallin, Hsp70, DNAJB6, clusterin and the BRICHOS domain — while archaeal chaperones remain untested. One chaperone was therefore selected from each domain of life, on the basis that each operates under a distinct constraint:</p>
+            <ul><li><b>Human Hsp70</b> (PDB 1S3X) — the most abundant human chaperone, responsible for folding a substantial fraction of nascent protein, and dependent on ATP and co-chaperones.</li><li><b><i>E. coli</i> Hsp33</b> (PDB 1VZY) — a redox-regulated holdase activated by oxidative stress, functioning independently of ATP under conditions in which ATP-dependent chaperones are inactivated.</li><li><b>Archaeal HypC</b> (PDB 2Z1C) — from <i>Thermococcus kodakaraensis</i>, an organism growing at 85–100 °C, adapted to maintain protein structure under extreme conditions.</li></ul></div>
+          <div class="pp"><p class="pl">Methodology</p>
+            <p>The Tau model was obtained from AlphaFold (AF-P10636) and the chaperone structures from the PDB. For human Hsp70 the nucleotide-binding (ATPase) domain was used — PDB 1S3X, residues 1–382 at 1.84 Å — rather than the full-length protein, because the objective was an interaction surface resolved well enough to serve as a template for protein engineering. All starting structures were validated before docking by PROCHECK for stereochemistry and ERRAT2 across five regions of Tau, with Ramachandran analysis placing more than 90% of residues in favoured regions.</p>
+            <p>Structures were prepared in PyMOL by removal of water, ligands and extraneous chains and addition of hydrogen atoms; missing residues were modelled in SWISS-MODEL. Each chaperone was docked to Tau in ClusPro 2.0 under blind conditions, without assumption of the interface, and the ten energy-ranked models per pair were retained. Binding free energy, dissociation constant and interface contacts were estimated in PRODIGY.</p></div>
+          <div class="pp"><p class="pl">Results</p>
+          <div class="dg" role="img" aria-label="Predicted binding free energy of the top-ranked model: E. coli Hsp33 minus 16.0, human Hsp70 minus 9.1 kilocalories per mole">
             <div class="brow"><span><i>E. coli</i> Hsp33</span><div class="track"><div class="fill h" data-w="100" style="width:100%"></div></div><span class="n">−16.0 kcal/mol</span></div>
             <div class="brow"><span>Human Hsp70</span><div class="track"><div class="fill hc" data-w="56.9" style="width:56.9%"></div></div><span class="n">−9.1 kcal/mol</span></div>
-            <p class="cap">Predicted ΔG. A longer bar means stronger predicted binding.</p>
-          </div><p>Used ClusPro protein–protein docking and PRODIGY affinity estimation. Hsp33 is a computational candidate for follow-up.</p><p>Shared Best Paper Award with co-author M. Bora, One Health conference, Jan 2026. Supervisor: Dr C. Sudandiradoss.</p>
+            <p class="cap">Predicted ΔG of the top-ranked model of ten. A longer bar denotes stronger predicted binding.</p>
+          </div>
+            <p>Predicted dissociation constants differed by five orders of magnitude: K<sub>d</sub> 1.9 pM for Hsp33–Tau against 220 nM for Hsp70–Tau.</p>
+            <p>The difference was not confined to a single pose. Four of ten Hsp33 models returned ΔG at or below −12.8 kcal/mol (−16.0, −15.7, −15.2 and −13.7), whereas only one of ten Hsp70 models exceeded −7.0 kcal/mol, the remainder falling between −4.4 and −6.9 kcal/mol.</p>
+            <p>Interface composition also differed. In the top-ranked model of each pair, intermolecular contacts for Hsp33–Tau against Hsp70–Tau were: polar–polar 10 against 0; polar–apolar 41 against 7; charged–apolar 40 against 32; apolar–apolar 26 against 13; and charged–polar 9 against 3. Non-interacting surface was comparable between complexes (charged 25.2% against 24.4%; apolar 44.0% against 45.9%), indicating that the difference resides at the interface rather than in overall surface composition.</p></div>
+          <div class="pp"><p class="pl">Interpretation</p>
+            <p>Hsp33 is predicted to bind Tau substantially more strongly than Hsp70. The ten polar–polar contacts formed by Hsp33, against none for Hsp70, are consistent with the properties of Tau, which is intrinsically disordered and polar across much of its sequence. The two chaperones operate under different constraints: Hsp70 engages a large and heterogeneous substrate pool and so trades maximal affinity for versatility and ATP-dependent release, whereas Hsp33 is subject to no equivalent requirement.</p>
+            <p>Hsp33 is activated by oxidative stress, a condition also present in the Alzheimer brain, so the trigger for its activity coincides with the environment in which Tau aggregates. This identifies Hsp33 as a template for the design of a synthetic binder reproducing both its interface composition and its redox-dependent activation.</p>
+            <p>The archaeal candidate was rejected on protein properties rather than on binding. The thermal stability that recommended HypC also means it would not be cleared after delivery: it would require manual tagging for degradation, with accumulation toxicity as the cost of failure. As a protein foreign to the human proteome it carries an additional immunogenicity risk. Hsp33 was therefore retained as the design template.</p>
+            <p>These results are docking predictions. Experimental validation by surface plasmon resonance or isothermal titration calorimetry, together with Tau aggregation assays, is required.</p></div>
+          <div class="pp"><p class="pl">Output</p>
+            <p>Undergraduate thesis, VIT Vellore. Seminar presentation with co-author M. Bora. Best Paper Award (shared), One Health international conference, January 2026. Supervisor: Dr C. Sudandiradoss.</p></div>
         </div></div>
         <button class="toggle" type="button" aria-haspopup="dialog" data-pm="m2">View details</button>
       </article>
+
       <article class="proj" data-tags="struct">
-        <p class="meta"><span class="mono">03/2025 – 03/2026</span><span class="org">VIT, Vellore · Review co-author</span></p>
+        <p class="meta"><span class="mono">05/2023 – 03/2026</span><span class="org">VIT, Vellore · Review, second author</span></p>
         <h3>E3 ubiquitin ligases review</h3>
-        <p>A published review of E3 ligase structure, disease roles and targeted protein degradation. I made all the figures.</p>
+        <p>How can E3 ubiquitin ligases be translated from a mechanism of disease into a therapeutic target?</p>
         <div class="tags"><span class="pill">Literature synthesis</span><span class="pill">Scientific figure design</span><span class="pill">Responding to peer review</span></div>
         <div class="more" id="m3"><div class="more-in">
-          <p>Integrated structural and disease evidence across RING, HECT, RBR and RCR E3 ligase families.</p><p>Evaluated PROTAC strategies, E3-modulated CAR-T approaches and computational drug-design methods. Supervisor: Dr C. Sudandiradoss.</p>
+          <div class="pp"><p class="pl">Background and rationale</p>
+            <p>The ubiquitin–proteasome system eliminates short-lived, misfolded and damaged proteins. E3 ligases confer substrate selectivity on this process and therefore determine which proteins are degraded. Their dysregulation underlies cancer, neurodegeneration and immune dysfunction.</p>
+            <p>That same selectivity is therapeutically exploitable. PROTACs and molecular glues recruit an E3 ligase to degrade proteins refractory to conventional inhibition, since degradation requires only a binding site rather than a catalytic one. The structural and therapeutic literatures on E3 ligases had not previously been integrated in a single review.</p></div>
+          <div class="pp"><p class="pl">Methodology</p>
+            <p>All sections of the review were written collaboratively, with approximately equal contribution between the three authors. I designed all five figures and prepared the responses to peer review across one revision cycle.</p>
+            <p>The review covers the four canonical families — RING, HECT, RBR and RCR — together with U-box ligases as a RING subclass lacking the zinc-coordinating domain, and the non-canonical families. Evidence is organised into three tables: family classification by catalytic mechanism and subfamily; disease association in cancer; and neurodevelopmental, neurological and genetic disorders. 93 references.</p></div>
+          <div class="pp"><p class="pl">Results</p>
+            <p>Each family is mapped to its catalytic mechanism and to six processes under its control: proteostasis, DNA repair, development and differentiation, signal transduction, cell-cycle regulation and immune regulation. The regulation of the ligases themselves is then addressed through post-translational modification, signalling molecules, and autoinhibition and conformational change.</p>
+            <p>Three therapeutic strategies are compared. First, molecular glues and PROTACs, with clinical-stage examples: bavdegalutamide (ARV-110) in prostate cancer, vepdegestrant (ARV-471) in breast cancer and KY-474 in autoimmune disease. Second, E3-modulated CAR-T approaches, in which Cbl-b and Peli1 ubiquitinate ZAP70 and CD3ζ and so attenuate CAR T-cell signalling within the tumour microenvironment. Third, AI-assisted degrader design, exemplified by D16-M1P2, a generative-AI PROTAC that degrades PKMYT1 and is selectively lethal in CCNE1-amplified and FBXW7-mutated cancers.</p></div>
+          <div class="pp"><p class="pl">Interpretation</p>
+            <p>Targeted protein degradation extends druggability to targets lacking a tractable pocket. The choice of E3 family is not a downstream chemical consideration: it constrains the tissue in which a degrader is active and the substrate range it can reach, and is therefore the primary design decision.</p>
+            <p>The CAR-T literature inverts this relationship. There the E3 ligase is the liability rather than the instrument, and inhibition of Cbl-b and Peli1 preserves receptor signalling that the tumour microenvironment otherwise degrades. The same enzyme class accordingly functions as a therapeutic tool in one strategy and as a therapeutic target in the other.</p></div>
+          <div class="pp"><p class="pl">Output</p>
+            <p>Sriram S, Krishnakumar P, Sudandiradoss C (2026). <i>Frontiers in Molecular Biosciences</i> 13:1745654. Received 13 November 2025; accepted 13 February 2026; published 10 March 2026. <a href="https://doi.org/10.3389/fmolb.2026.1745654" target="_blank" rel="noopener">doi:10.3389/fmolb.2026.1745654</a>. Supervisor: Dr C. Sudandiradoss.</p></div>
         </div></div>
         <button class="toggle" type="button" aria-haspopup="dialog" data-pm="m3">View details</button>
       </article>
+
       <article class="proj" data-tags="wet">
         <p class="meta"><span class="mono">01/2025 – 04/2025</span><span class="org">USV Pvt Ltd, Mumbai · R&amp;D intern</span></p>
         <h3>Antibody biosimilar cloning</h3>
-        <p>Expression constructs for two EMEA biosimilar projects: faricimab and risankizumab.</p>
+        <p>Can validated expression constructs be generated for two antibody biosimilars, faricimab and risankizumab?</p>
         <div class="tags"><span class="pill">Molecular cloning</span><span class="pill">Expression construct design</span><span class="pill">Restriction digest screening</span></div>
         <div class="more" id="m4"><div class="more-in">
-          <p>Curated antibody sequences and prepared heavy- and light-chain expression constructs.</p><p>Helped troubleshoot incomplete ligations and found double-insert-positive constructs by diagnostic restriction digestion.</p><p>Presented a perfusion versus fed-batch technology assessment to USV leadership. Supervisors: Dr Shardul Salunkhe and Anjali Rakesh Chutke.</p>
+          <div class="pp"><p class="pl">Background and rationale</p>
+            <p>A biosimilar must be expressed in a cell line that yields the antibody at the required titre and in the correct form. The first requirement is a verified expression construct for each antibody chain. EMEA submission requires this work to be documented from sequence selection onwards.</p></div>
+          <div class="pp"><p class="pl">Methodology</p>
+            <p>Antibody sequences were curated and heavy- and light-chain expression constructs designed and cloned. Colonies were screened by diagnostic restriction digestion.</p></div>
+          <div class="pp"><p class="pl">Results</p>
+            <p>Diagnostic digestion identified constructs positive for a double insert. Incomplete ligations were encountered; I contributed to diagnosing the cause and to repeating the affected reactions.</p></div>
+          <div class="pp"><p class="pl">Interpretation</p>
+            <p>Insert size alone does not establish construct identity, so restriction screening was a necessary checkpoint before any construct entered the next stage of development. The screen excluded incorrect colonies from downstream work.</p></div>
+          <div class="pp"><p class="pl">Output</p>
+            <p>Expression constructs for two EMEA biosimilar programmes. Technology assessment of perfusion against fed-batch culture, presented to USV leadership. Supervisors: Dr Shardul Salunkhe and Anjali Rakesh Chutke.</p></div>
         </div></div>
         <button class="toggle" type="button" aria-haspopup="dialog" data-pm="m4">View details</button>
       </article>
+
       <article class="proj" data-tags="wet">
-        <p class="meta"><span class="mono">MSc mini project</span><span class="org">Imperial · Dept. of Infectious Disease</span></p>
+        <p class="meta"><span class="mono">MSc research project</span><span class="org">Imperial · Dept. of Infectious Disease</span></p>
         <h3>PM2.5 and vape-liquid co-exposure</h3>
-        <p>How do air pollution particles and vape liquid act together on lung epithelial cells?</p>
-        <div class="tags"><span class="pill">Cell culture and exposure</span><span class="pill">RT-qPCR</span><span class="pill">Flow cytometry</span></div>
+        <p>Does co-exposure to PM2.5 and vape liquid produce greater injury in alveolar epithelial cells than either exposure alone?</p>
+        <div class="tags"><span class="pill">Cell culture and exposure</span><span class="pill">RT-qPCR</span><span class="pill">Flow cytometry</span><span class="pill">Assay quality control</span></div>
         <div class="more" id="m5"><div class="more-in">
-          <p>Compared single and combined exposures over 24 hours with RT-qPCR, Annexin V/7-AAD flow cytometry and LDH release.</p><p>IL6 rose 51.49-fold with vape alone versus 0.90-fold with co-exposure. These were single-experiment results (n = 1), so I reported them as preliminary and flagged possible LDH assay interference.</p>
+          <div class="pp"><p class="pl">Background and rationale</p>
+            <p>Inhalation exposures rarely occur in isolation. Individuals relocating from rural areas to urban centres sustain continuous PM2.5 exposure from transport microenvironments, frequently alongside adoption of high-nicotine electronic nicotine delivery systems. Both hazards are individually characterised: each elevates IL-6 and IL-8 in airway epithelium through NF-κB and JAK-STAT signalling, and combined inhalation exposures have been reported to act co-operatively, producing impairment exceeding that of either hazard alone.</p>
+            <p>The stated hypothesis was therefore that co-exposure would exacerbate cellular distress, increasing cytotoxicity and pro-inflammatory cytokine expression and shifting the profile towards programmed cell death, with an elevated Bax:Bcl-2 ratio.</p></div>
+          <div class="pp"><p class="pl">Methodology</p>
+            <p>A549 alveolar epithelial cells were exposed for 24 h to PM2.5 at 20 µg/mL, high-nicotine vape liquid at 180 µg/mL, or both in combination.</p>
+            <ul><li><b>Cell death</b> — Annexin V/7-AAD staining acquired on a BD Accuri C6, with unstained and single-stained controls and compensation applied before gating.</li><li><b>Transcript abundance</b> — TRIzol extraction, Agilent TapeStation quantification, and SYBR Green RT-qPCR on a QuantStudio 3 for IL-6, IL-8, Bax and Bcl-2, normalised to TBP.</li><li><b>Membrane integrity</b> — CytoTox 96 LDH release, with lysis solution establishing maximum release.</li></ul></div>
+          <div class="pp"><p class="pl">Results</p>
+            <p>The hypothesis was not supported. Co-exposure was consistently less injurious than vape liquid alone.</p>
+            <p><b>Cell death.</b> Vape liquid was the most cytotoxic single agent, reducing viability to 75.8% and raising necrosis to 23.5%, against 79.3% and 19.7% respectively in untreated controls. Co-exposure restored viability to 79.2% and necrosis to 20.5%, approximating control values. Early apoptosis remained between 0.0% and 0.1% across all conditions, indicating cell death by membrane rupture rather than by programmed pathways.</p>
+            <p><b>Transcript abundance (n = 1).</b> Vape liquid alone induced a pronounced transcriptional response: IL-6 51.49-fold, IL-8 9.55-fold and Bax 19.16-fold, with a compensatory 5.73-fold increase in Bcl-2. Under co-exposure all three returned to baseline: IL-6 0.90-fold, IL-8 0.92-fold and Bax 1.08-fold.</p>
+            <p><b>Membrane integrity.</b> The LDH assay returned values exceeding 100%, which cannot represent a valid cytotoxicity percentage. Chemical interference from vape components and incomplete lysis of the maximum-release control are the probable causes, so the assay was used for relative comparison only. On that basis the trend was consistent: highest release under vape liquid alone, reduced under co-exposure.</p></div>
+          <div class="pp"><p class="pl">Interpretation</p>
+            <p>The two hazards are antagonistic. PM2.5 rescued the cells from vape liquid across viability, necrosis and every transcript measured. Two mechanisms are consistent with this result. Semi-volatile nicotine and propylene glycol may adsorb onto the high surface area of PM2.5 particles, masking reactive sites and reducing the effective delivered dose. Alternatively, PM2.5 is an established activator of the Nrf2-mediated antioxidant response and may prime that defence in advance of the vape insult.</p>
+            <p>One observation is not accounted for by either mechanism. Flow cytometry indicates necrotic cell death, while RT-qPCR indicates activation of apoptotic signalling. Necroptosis is intermediate between the two, and MLKL and RIPK3 are the appropriate markers for subsequent work.</p>
+            <p>The limitations are material. Transcript data derive from a single experiment normalised to one reference gene, so ACTB should be added. Transcript abundance does not establish protein level, and IL-6 and HO-1 require Western blot confirmation. The LDH assay requires an interference control and a more effective lysis reagent to return values within the 0–100% range. Submerged culture does not reproduce the airway, so an air–liquid interface model is indicated. The rescue effect itself should be tested directly by Nrf2 knockout.</p></div>
+          <div class="pp"><p class="pl">Output</p>
+            <p>MRP scientific report, Department of Infectious Disease, Imperial College London.</p></div>
         </div></div>
         <button class="toggle" type="button" aria-haspopup="dialog" data-pm="m5">View details</button>
       </article>
+
       <article class="proj" data-tags="struct">
-        <p class="meta"><span class="mono">10/2023 – 01/2024</span><span class="org">BPRI, Noida · Project lead</span></p>
+        <p class="meta"><span class="mono">10/2023 – 01/2024</span><span class="org">BPRI, Noida · First author</span></p>
         <h3>c-KIT kinase in GIST</h3>
-        <p>A structural and docking study of c-KIT, the main driver kinase in gastrointestinal stromal tumour.</p>
-        <div class="tags"><span class="pill">Binding-site analysis</span><span class="pill">Molecular docking</span><span class="pill">Scientific writing</span></div>
+        <p>Which cavity of the c-KIT kinase domain does sunitinib occupy, and what residues line it?</p>
+        <div class="tags"><span class="pill">Binding-site analysis</span><span class="pill">Structure validation</span><span class="pill">Molecular docking</span><span class="pill">Scientific writing</span></div>
         <div class="more" id="m6"><div class="more-in">
-          <p>Characterised a 24-residue predicted binding site in c-KIT (PDB 6GQM) and docked sunitinib (Vina score −9.8 kcal/mol).</p><p>Output: first-author paper in JETIR (2024). Supervisor: Dr Uma Kumari.</p>
+          <div class="pp"><p class="pl">Background and rationale</p>
+            <p>Gastrointestinal stromal tumour is driven principally by gain-of-function mutations in KIT and PDGFRA, which render the kinase constitutively active. Imatinib is the first-line agent; resistance develops, and sunitinib is among the agents used subsequently. Rational design against resistant forms requires the binding site to be defined, which motivates a structural and docking characterisation of the kinase domain.</p></div>
+          <div class="pp"><p class="pl">Methodology</p>
+            <p>Analysis was performed on the c-KIT kinase domain (PDB 6GQM), which carries AZD3229 as its co-crystallised ligand.</p>
+            <ul><li><b>Validation</b> — PROCHECK Ramachandran analysis prior to docking.</li><li><b>Cavity and interface analysis</b> — PDBSum with SURFNET cleft detection; CATH for domain classification.</li><li><b>Docking</b> — CB-Dock2 with AutoDock Vina scoring, performed blind across all detected cavities rather than at an assumed site.</li><li><b>Context</b> — COBALT and BLASTP for alignment, STRING for interaction partners, PyMOL and RasMol for visualisation.</li></ul></div>
+          <div class="pp"><p class="pl">Results</p>
+            <p><b>Validation.</b> Across 585 residues, 92.8% occupied the most favoured regions, 6.8% additionally allowed regions and 0.4% generously allowed regions, with no residue in a disallowed region.</p>
+            <p><b>Docking.</b> Scores across five cavities were: C2 −9.8 kcal/mol (2,613 Å³), C3 −9.1 (1,689 Å³), C1 −8.8 (7,204 Å³), C5 −6.1 (384 Å³) and C4 −5.9 (486 Å³). The highest-scoring cavity was not the largest: C1 exceeds C2 by almost threefold in volume yet scores 1.0 kcal/mol lower.</p>
+            <p><b>Composition of the preferred cavity.</b> C2 contacts 24 residues, extending from the glycine-rich loop (LEU595, GLY596) through the hinge region (GLU671, TYR672, CYS673) to the activation loop (ASP810, PHE811), and including THR670.</p>
+            <p><b>Structural context.</b> The chain A–chain B interface comprises 3 salt bridges, 9 hydrogen bonds and 75 non-bonded contacts, between 20 and 17 residues respectively. STRING returned KIT ligand at 0.999 confidence and the GRB2 adaptor at 0.998.</p></div>
+          <div class="pp"><p class="pl">Interpretation</p>
+            <p>Cavity volume is a poor predictor of ligand preference. Blind docking across all five cavities located the highest score in a mid-sized pocket rather than the largest, which supports exhaustive cavity scanning over selection of an assumed site.</p>
+            <p>The composition of that cavity is the informative result. THR670 is the gatekeeper residue of c-KIT, and ASP810–PHE811 constitutes the opening of the DFG motif. Both lie within the region in which imatinib resistance arises, so the cavity preferred by sunitinib coincides with the region altered by resistance mutations, consistent with its use as a second-line agent.</p>
+            <p>These are docking predictions derived from a single structure with one ligand. They define a cavity for subsequent design; they do not measure affinity, and no experimental binding assay was performed.</p></div>
+          <div class="pp"><p class="pl">Output</p>
+            <p>Krishnakumar P, Kumari U (2024). <i>Journal of Emerging Technologies and Innovative Research</i> 11(2):c56–c65. Paper ID JETIR2402210. First author. Supervisor: Dr Uma Kumari.</p></div>
         </div></div>
         <button class="toggle" type="button" aria-haspopup="dialog" data-pm="m6">View details</button>
+      </article>
+
+      <article class="proj" data-tags="wet">
+        <p class="meta"><span class="mono">09/2023 – 10/2023</span><span class="org">Jaslok Hospital, Mumbai · Clinical laboratory intern</span></p>
+        <h3>Transplant immunology laboratory</h3>
+        <p>What must a transplant immunology laboratory establish before a transplant can proceed?</p>
+        <div class="tags"><span class="pill">HLA typing by PCR</span><span class="pill">CDC crossmatch</span><span class="pill">Donor-specific antibody monitoring</span><span class="pill">Immunoassay interpretation</span></div>
+        <div class="more" id="m8"><div class="more-in">
+          <div class="pp"><p class="pl">Background and rationale</p>
+            <p>Before a transplant, the recipient's immune system has to be tested against the donor's tissue. Antibodies already present against donor HLA can cause rejection, so the laboratory work-up decides whether a donor and recipient are compatible at all.</p></div>
+          <div class="pp"><p class="pl">Methodology</p>
+            <p>Worked within pre-transplant donor–recipient work-ups: HLA typing by PCR, complement-dependent cytotoxicity crossmatches, and donor-specific antibody monitoring. Interpreted immunoassay panels — ELISA, IFA, ECLIA and rapid diagnostic tests — against clinical reporting criteria.</p></div>
+          <div class="pp"><p class="pl">Results</p>
+            <p>Contributed assay results to donor–recipient compatibility assessments during the placement.</p></div>
+          <div class="pp"><p class="pl">Interpretation</p>
+            <p>This was the first laboratory I worked in where a result informed a clinical decision rather than a follow-up experiment. A transplant eligibility call cannot be repeated next week with a better control, so the reporting criteria, the controls and the borderline values carry a weight that a research assay does not. It changed how I treat a questionable result, and it is the reason I report excluded assays explicitly in my own work.</p></div>
+          <div class="pp"><p class="pl">Output</p>
+            <p>Credit-bearing summer industrial internship, VIT course BBIT399J.</p></div>
+        </div></div>
+        <button class="toggle" type="button" aria-haspopup="dialog" data-pm="m8">View details</button>
       </article>
     </div>
   </div>
@@ -845,7 +1133,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
     <div class="hx" id="flow">
       <div class="hx-stick" aria-hidden="true">
         <canvas class="hx-canvas" id="hxCanvas"></canvas>
-        <div class="hx-label"><span class="hx-date" id="hxDate">2021</span></div>
+        <div class="hx-label"><span class="hx-date" id="hxDate">2021</span><span class="hx-hint" id="hxHint">Drag to spin</span></div>
       </div>
       <div class="hx-listwrap"><span class="hx-fill" id="hxFill" aria-hidden="true"></span><ol class="hx-list" id="flowList"></ol></div>
     </div>
@@ -888,8 +1176,8 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
       <div class="pub">
         <span class="kind alt">MSc writing</span>
         <div style="display:grid;gap:10px">
-          <p><b>Precision Therapeutics for ALS: Reversing RNA Splicing Defects in Human Cerebellar Organoids.</b> Research grant proposal, Imperial College London, 2026 (Distinction). Proposed spatial transcriptomic and organoid studies of TDP-43 dysfunction and STMN2 mis-splicing.</p>
-          <p><b>Astrocyte-Targeted Therapeutic Strategies for C9orf72-Associated ALS.</b> Review and perspective paper, Imperial College London. Proposed LRP8-targeted siRNA delivery with autophagic aggregate clearance.</p>
+          <p><b>Precision Therapeutics for ALS: Reversing RNA Splicing Defects in Human Cerebellar Organoids.</b> Assessed MSc grant proposal, Imperial College London, 2026. Unpublished. Individual assessment: Distinction. Proposed spatial transcriptomic and organoid studies of TDP-43 dysfunction and STMN2 mis-splicing.</p>
+          <p><b>Astrocyte-Targeted Therapeutic Strategies for C9orf72-Associated ALS.</b> Assessed MSc review and perspective paper, Imperial College London. Unpublished. Proposed LRP8-targeted siRNA delivery with autophagic aggregate clearance.</p>
         </div>
       </div>
     </div>
@@ -898,6 +1186,27 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
 
 <!-- ================= SKILLS ================= -->
 <section id="skills">
+<svg class="sci-bg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<g class="sb-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<path d="M110 560 L110 120"/><path d="M110 560 L700 560"/>
+<path d="M110 560 L106 132 M110 560 L114 132"/>
+<g stroke-width="1.1">
+<path d="M110 480 L122 480"/><path d="M110 400 L122 400"/><path d="M110 320 L122 320"/><path d="M110 240 L122 240"/><path d="M110 160 L122 160"/>
+<path d="M220 560 L220 548"/><path d="M330 560 L330 548"/><path d="M440 560 L440 548"/><path d="M550 560 L550 548"/><path d="M660 560 L660 548"/>
+</g>
+<path d="M110 548 C230 544 305 534 370 496 C421 466 455 398 481 330 C507 262 538 208 601 186 C647 170 682 166 700 164" stroke-width="2.2"/>
+<path d="M110 552 C239 550 324 546 396 526 C459 508 498 470 527 420 C559 366 598 330 657 316 C684 310 693 308 700 307" stroke-width="1.6" stroke-dasharray="7 9"/>
+<g stroke-width="1.3">
+<circle cx="220" cy="545" r="4.5"/><circle cx="330" cy="520" r="4.5"/><circle cx="386" cy="486" r="4.5"/>
+<circle cx="440" cy="392" r="4.5"/><circle cx="496" cy="300" r="4.5"/><circle cx="570" cy="212" r="4.5"/><circle cx="645" cy="178" r="4.5"/>
+</g>
+<path d="M481 330 L481 560" stroke-width="1" stroke-dasharray="4 8"/>
+</g>
+<g class="sb-ink" fill="currentColor" stroke="none">
+<text x="52" y="330" class="sb-ax" transform="rotate(-90 52 330)">bound fraction</text>
+<text x="360" y="604" class="sb-ax">log [chaperone]</text>
+</g>
+</svg>
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow">Technical skills</p>
@@ -919,11 +1228,12 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
   <div class="wrap">
     <div class="sec-head"><p class="eyebrow">Background</p><h2>Education, awards and service</h2></div>
     <div class="cols3">
-      <div><h3 class="subhead">Education</h3>
+      <div><h3 class="subhead">Education and training</h3>
         <div class="list">
           <div class="li"><span class="mono">09/2025 – 09/2026</span><h3>MSc Molecular Medicine, Distinction</h3><p>Imperial College London. Research thesis: Distinction.</p></div>
           <div class="li"><span class="mono">2021 – 2025</span><h3>B.Tech Biotechnology, CGPA 8.75/10</h3><p>Vellore Institute of Technology, India. WES-calculated GPA: 3.97/4.</p></div>
           <div class="li"><span class="mono">2019 – 2021</span><h3>Higher Secondary (HSC), 89.5%</h3><p>Pace Junior Science College, Thane, India</p></div>
+          <div class="li"><span class="mono">08/2026 – 09/2026</span><h3>Biosecurity, BlueDot Impact</h3><p>30-hour cohort-based course on pandemic prevention, detection and response, taken part-time over six weeks in small groups with a domain-expert facilitator. Covers pandemic and bioweapon risk, and the AI–biosecurity intersection. Member of the alumni network.</p></div>
         </div>
       </div>
       <div><h3 class="subhead">Awards</h3>
@@ -938,6 +1248,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
           <div class="li"><span class="mono">01/2026 – 09/2026</span><h3>Postgraduate Taught Representative</h3><p>Faculty of Medicine Postgraduate Education Board, Imperial. Student voice on programme changes, assessment and support.</p></div>
           <div class="li"><span class="mono">09/2025 – 09/2026</span><h3>Course Representative, MSc Molecular Medicine</h3><p>Elected liaison for a 37-student international cohort.</p></div>
           <div class="li"><span class="mono">10/2025 – 09/2026</span><h3>AI Program Representative, Claude Builder Club</h3><p>Imperial. Helped the cohort use Claude-based tools for scientific work.</p></div>
+          <div class="li"><span class="mono">07/2026 – 09/2026</span><h3>Student Content Creator, Student Recruitment and Outreach</h3><p>Imperial. Paid casual role, offered by the Faculty of Medicine after my student-representative work. I make written and video content on postgraduate life for prospective applicants, and I feature in the College's 2026 virtual campaign.</p></div>
           <div class="li"><span class="mono">03/2026 – present</span><h3>2026 Ambassador, Thinking About Thinking</h3><p>Interdisciplinary community on AI, neuroscience, mathematics and thought.</p></div>
           <div class="li"><span class="mono">01/2023 – 01/2025</span><h3>Chairperson &amp; Head of Finance, IEEE PES</h3><p>VIT. Co-founded the PowerXcel ideathon; secured INR 100,000+ in sponsorship.</p></div>
         </div>
@@ -946,19 +1257,74 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
 
     <div class="sec-head" style="margin-top:48px"><p class="eyebrow">Talks and posters</p><h2>Presentations</h2></div>
     <div class="talks">
-      <div class="talk"><span class="mono">Jul 2026</span><span>Programme representative speaker, Revolutions in Biomedicine Master's Symposium, Imperial College London.</span></div>
-      <div class="talk"><span class="mono">Jun 2026</span><span>Poster: Comparative Transcriptomic Analysis of Coronavirus-Associated Hyperinflammatory Disease in Children and Felines. MSc Molecular Medicine Poster Session, Imperial.</span></div>
-      <div class="talk"><span class="mono">Mar 2026</span><span>Invited talk: Imparting Experiences of Higher Education in the United Kingdom. VIT (host: Dr Arati Kumari).</span></div>
-      <div class="talk"><span class="mono">Jan 2026</span><span>Paper presentation, Best Paper Award: Chaperone Binding to Tau Protein (with M. Bora). One Health conference, Tinsukia College, Assam.</span></div>
-      <div class="talk"><span class="mono">Nov 2025</span><span>Group oral: Crohn's Disease. Cohort disease-awareness programme, Imperial. Team score 84% (Distinction).</span></div>
-      <div class="talk"><span class="mono">Sep 2025</span><span>Oral, presenting author: Huntingtin in Complex with HAP40 with BioPython. BioTrendz, NIET, Greater Noida.</span></div>
-      <div class="talk"><span class="mono">Apr 2025</span><span>Perfusion Cell Culture for Monoclonal Antibody Production: A Technology Assessment. Internal talk to USV leadership.</span></div>
+      <div class="talk"><span class="mono">Jul 2026</span><span class="tt">Oral</span><span>Krishnakumar P. <cite>MSc Molecular Medicine at Imperial: student experience and thesis research overview.</cite> Revolutions in Biomedicine Master's Symposium, Imperial College London, London, United Kingdom. <span class="note">Programme representative speaker.</span></span></div>
+      <div class="talk"><span class="mono">Jun 2026</span><span class="tt">Poster</span><span>Krishnakumar P. <cite>Comparative transcriptomic analysis of coronavirus-associated hyperinflammatory disease in children and felines.</cite> MSc Molecular Medicine Poster Session, Imperial College London, London, United Kingdom.</span></div>
+      <div class="talk invited"><span class="mono">Mar 2026</span><span class="tt inv">Invited</span><span>Krishnakumar P. <cite>Imparting experiences of higher education in the United Kingdom.</cite> Vellore Institute of Technology, Vellore, India. <span class="note">Host: Dr Arati Kumari.</span></span></div>
+      <div class="talk"><span class="mono">Jan 2026</span><span class="tt">Oral</span><span>Krishnakumar P, Bora M. <cite>Comparative analysis of archaebacterial, human and <i>E. coli</i> chaperone binding to Tau protein.</cite> One Health International Conference, Tinsukia College, Assam, India. <span class="note">Best Paper Award, shared.</span></span></div>
+      <div class="talk"><span class="mono">Nov 2025</span><span class="tt">Oral</span><span><cite>Crohn's disease.</cite> Assessed group presentation, cohort disease-awareness programme, Imperial College London, London, United Kingdom. <span class="note">Awarded a Distinction.</span></span></div>
+      <div class="talk"><span class="mono">Sep 2025</span><span class="tt">Oral</span><span>Kumari U, Krishnakumar P, Archith Raj M, Chandar R. <cite>Huntingtin in complex with HAP40, analysed with BioPython.</cite> BioTrendz, NIET Greater Noida, India. <span class="note">Presenting author.</span></span></div>
+      <div class="talk"><span class="mono">Apr 2025</span><span class="tt">Internal</span><span>Krishnakumar P. <cite>Perfusion cell culture for monoclonal antibody production: a technology assessment.</cite> USV Private Limited, Mumbai, India.</span></div>
     </div>
   </div>
 </section>
 
 <!-- ================= GALLERY ================= -->
 <section id="gallery">
+<svg class="sci-bg sci-sketch" viewBox="0 0 1200 1600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<g class="sb-ink" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+<g transform="translate(70 90)">
+<path d="M4 44 C2 20 26 3 56 2 C88 1 112 18 112 43 C112 68 89 85 57 86 C27 87 6 70 4 46"/>
+<path d="M14 40 C16 24 34 13 57 13 C82 13 101 25 102 42"/>
+<circle cx="44" cy="40" r="6.5" stroke-width="1.6"/><circle cx="68" cy="52" r="4.5" stroke-width="1.6"/>
+<circle cx="76" cy="31" r="3.4" stroke-width="1.6"/><circle cx="36" cy="60" r="3.8" stroke-width="1.6"/>
+</g>
+<g transform="translate(980 60)">
+<path d="M22 2 L46 2 L44 22 L58 96 C60 112 50 124 34 124 C18 124 8 112 10 96 L24 22 Z"/>
+<path d="M13 84 C26 78 40 90 56 84" stroke-width="1.7"/><path d="M18 2 L50 2" stroke-width="2.6"/>
+</g>
+<g transform="translate(140 430)">
+<circle cx="52" cy="48" r="23"/>
+<path d="M52 25 C50 10 40 4 28 2 M34 32 C20 26 8 30 2 40 M36 66 C22 72 14 84 14 98 M70 62 C84 70 92 84 92 100"/>
+<path d="M74 44 C106 38 150 44 196 42 C240 40 272 46 312 44" stroke-width="2.3"/>
+<path d="M312 44 C322 34 336 32 346 38 M312 44 C322 54 336 56 346 50 M312 44 L348 44" stroke-width="1.8"/>
+<path d="M118 44 C118 34 134 34 134 44 C134 54 150 54 150 44" stroke-width="1.5"/>
+</g>
+<g transform="translate(930 420)">
+<path d="M26 2 L26 58 L40 86 L40 128 C40 140 32 148 20 148 C8 148 0 140 0 128 L0 86 L14 58 L14 2 Z" transform="translate(6 0)"/>
+<path d="M10 2 L42 2" stroke-width="2.8"/><path d="M8 120 C18 114 28 126 40 120" stroke-width="1.7"/>
+</g>
+<g transform="translate(90 830)">
+<path d="M2 4 C34 36 66 36 98 4 M2 68 C34 100 66 100 98 68 M2 132 C34 164 66 164 98 132"/>
+<path d="M98 4 C130 36 162 36 194 4 M98 68 C130 100 162 100 194 68 M98 132 C130 164 162 164 194 132"/>
+<g stroke-width="1.4">
+<path d="M26 22 L26 50 M50 30 L50 42 M74 22 L74 50"/><path d="M122 22 L122 50 M146 30 L146 42 M170 22 L170 50"/>
+<path d="M26 86 L26 114 M50 94 L50 106 M74 86 L74 114"/>
+</g>
+</g>
+<g transform="translate(900 820)">
+<path d="M2 6 C40 1 86 1 124 6" stroke-width="1.7"/>
+<g stroke-width="1.5">
+<circle cx="16" cy="34" r="11"/><circle cx="48" cy="34" r="11"/><circle cx="80" cy="34" r="11"/><circle cx="112" cy="34" r="11"/>
+<circle cx="16" cy="66" r="11"/><circle cx="48" cy="66" r="11"/><circle cx="80" cy="66" r="11"/><circle cx="112" cy="66" r="11"/>
+<circle cx="16" cy="98" r="11"/><circle cx="48" cy="98" r="11"/><circle cx="80" cy="98" r="11"/><circle cx="112" cy="98" r="11"/>
+</g>
+<path d="M-6 16 L-6 116 M130 16 L130 116" stroke-width="1.6"/>
+</g>
+<g transform="translate(110 1230)">
+<path d="M34 2 L34 46 L2 120 C-4 134 6 148 22 148 L86 148 C102 148 112 134 106 120 L74 46 L74 2"/>
+<path d="M26 2 L82 2" stroke-width="2.8"/>
+<path d="M14 100 C32 92 52 110 78 100 C88 96 94 98 98 102" stroke-width="1.7"/>
+<g stroke-width="1.5"><circle cx="38" cy="122" r="3.4"/><circle cx="62" cy="114" r="2.8"/><circle cx="52" cy="132" r="2.4"/></g>
+</g>
+<g transform="translate(940 1240)">
+<path d="M8 130 L8 34 C8 16 22 2 42 2 C62 2 76 16 76 34 L76 130"/>
+<path d="M8 130 C8 142 22 150 42 150 C62 150 76 142 76 130"/>
+<path d="M2 48 L82 48" stroke-width="1.5"/>
+<path d="M16 96 C30 88 48 106 68 96" stroke-width="1.7"/>
+<path d="M42 2 L42 -16 M26 -16 L58 -16" stroke-width="1.8"/>
+</g>
+</g>
+</svg>
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow">Gallery</p>
@@ -979,7 +1345,6 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
           <h3>Best Paper Award</h3>
           <p>Our paper on chaperone binding to Tau won the Best Paper Award at the two-day international conference "One Health: Holistic Approach Towards Healthcare". The conference had support from ASTEC and the Indian Council of Medical Research.</p>
           <p>We compared archaeal, human and <i>E. coli</i> chaperones by docking and affinity estimation. <i>E. coli</i> Hsp33 showed the strongest predicted binding (ΔG −16.0 kcal/mol). I shared the award with co-author M. Bora.</p>
-          <div class="facts"><span>International conference</span><span>Structural bioinformatics</span><span>Tau protein</span></div>
         </div>
       </article>
 
@@ -995,7 +1360,6 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
           <h3>NPTEL Elite + Gold, Top 1%</h3>
           <p>I completed the 12-week national online course Wild Life Ecology with a consolidated score of 100%: 25/25 in online assignments and 75/75 in the proctored exam.</p>
           <p>This placed me in the Top 1% of the 25,058 candidates who were certified in the course. The Ministry of Education, Government of India, funds the programme.</p>
-          <div class="facts"><span>Score 100%</span><span>Top 1% of 25,058</span><span>Proctored exam</span></div>
         </div>
       </article>
 
@@ -1021,7 +1385,6 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
           <h3>Best Biotechnology Project Award</h3>
           <p>At VIT's Engineer's Day 2024, with the theme "Engineering Solutions for a Sustainable World", our team won the Best Biotechnology Project Award for a bio-filter prototype that removes metal ions from industrial effluents.</p>
           <p>My part was building the prototype, pitching it to the judges and managing the components.</p>
-          <div class="facts"><span>Team project</span><span>Bioremediation</span><span>Prototype and pitch</span></div>
         </div>
       </article>
 
@@ -1031,6 +1394,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
 
 <!-- ================= RECOMMENDATIONS ================= -->
 <section id="recommendations" class="alt">
+  <canvas class="netbg" id="netRec" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow">Recommendations</p>
@@ -1039,7 +1403,17 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
     </div>
     <div class="rc2" id="rc">
       <div class="rp-list" role="tablist" aria-label="Choose a recommendation">
-        <button class="rp" type="button" role="tab" id="rp0" aria-controls="rq0" aria-selected="true" tabindex="0">
+        <button class="rp sup" type="button" role="tab" id="rp5" aria-controls="rq5" aria-selected="true" tabindex="0">
+          <span class="rc-avatar" aria-hidden="true">AC</span>
+          <span class="rp-txt"><b>Prof. Aubrey Cunnington</b><span>Supervisor of my MSc research project</span></span>
+          <span class="rp-bar" aria-hidden="true"></span>
+        </button>
+        <button class="rp" type="button" role="tab" id="rp6" aria-controls="rq6" aria-selected="false" tabindex="-1">
+          <span class="rc-avatar" aria-hidden="true">HL</span>
+          <span class="rp-txt"><b>Haiwei Luo</b><span>Appointed me Group Secretary of a 1,000-student community</span></span>
+          <span class="rp-bar" aria-hidden="true"></span>
+        </button>
+        <button class="rp" type="button" role="tab" id="rp0" aria-controls="rq0" aria-selected="false" tabindex="-1">
           <span class="rc-avatar" aria-hidden="true">SS</span>
           <span class="rp-txt"><b>Srineevas Sriram</b><span>Co-author of the E3 ubiquitin ligase review</span></span>
           <span class="rp-bar" aria-hidden="true"></span>
@@ -1066,9 +1440,29 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
         </button>
       </div>
       <div class="rq-stage">
-        <figure class="rq on" role="tabpanel" id="rq0" aria-labelledby="rp0">
+        <figure class="rq on" role="tabpanel" id="rq5" aria-labelledby="rp5">
+          <span class="rc-mark" aria-hidden="true">&ldquo;</span>
+          <p class="rq-pull">&hellip;Prahalad stood out for his analytical skills</p>
+          <blockquote class="rq-full" id="rqf5"><p>It was a great pleasure to supervise Prahalad's MSc Molecular Medicine research project at Imperial College. This course usually attracts excellent students, but Prahalad stood out for his analytical skills and ability to make sense of his findings. He thoroughly deserved the Distinction grade he received. I'm looking forward to continuing to work with him as we write up a paper based on his project.</p></blockquote>
+          <button class="rq-more" type="button" aria-expanded="false" aria-controls="rqf5">Read full recommendation</button>
+          <figcaption class="rc-who">
+            <span class="rc-avatar" aria-hidden="true">AC</span>
+            <span class="rc-id"><b>Prof. Aubrey Cunnington</b><span>Professor of Paediatric Infectious Disease &middot; Imperial College London</span><span class="rc-rel">Supervised my MSc research project &middot; 7 Nov 2026</span></span>
+          </figcaption>
+        </figure>
+        <figure class="rq" role="tabpanel" id="rq6" aria-labelledby="rp6" hidden>
+          <span class="rc-mark" aria-hidden="true">&ldquo;</span>
+          <p class="rq-pull">&hellip;his genuine passion for helping others</p>
+          <blockquote class="rq-full" id="rqf6"><p>I had the pleasure of working with Prahalad when I appointed him as Group Secretary of an online Imperial College London postgraduate community, bringing together around 1,000 students from across different faculties.</p><p>What stood out to me most about Prahalad was his genuine passion for helping others and his strong sense of responsibility. He is always willing to lend a hand, and whenever he takes on a task, he approaches it with dedication and gives it his very best. I was consistently impressed by both the quality and efficiency of his work, as well as his ability to bring thoughtful, constructive ideas to the table. More importantly, Prahalad's willingness to go above and beyond to support others played a significant role in fostering meaningful connections and building a strong sense of belonging among students, leaving a lasting positive impact on the community.</p><p>It was a pleasure working with Prahalad, and I have no doubt that his dedication, initiative, and genuine care for others will make him a valuable asset to any team.</p></blockquote>
+          <button class="rq-more" type="button" aria-expanded="false" aria-controls="rqf6">Read full recommendation</button>
+          <figcaption class="rc-who">
+            <span class="rc-avatar" aria-hidden="true">HL</span>
+            <span class="rc-id"><b>Haiwei Luo</b><span>MSc Computing (Visual Computing &amp; Robotics) &middot; Imperial College London</span><span class="rc-rel">Appointed me Group Secretary &middot; studied together &middot; 9 Nov 2026</span></span>
+          </figcaption>
+        </figure>
+        <figure class="rq" role="tabpanel" id="rq0" aria-labelledby="rp0" hidden>
           <span class="rc-mark" aria-hidden="true">“</span>
-          <p class="rq-pull">He was dedicated, reliable, and spared no opportunity to burn the midnight oil.</p>
+          <p class="rq-pull">…spared no opportunity to burn the midnight oil</p>
           <blockquote class="rq-full" id="rqf0"><p>I had the pleasure of studying with Prahalad, as well as collaborating with him on a review article (E3 ubiquitin ligases: structural diversity, dysregulation in disease, and their emerging role in targeted therapeutic strategies).</p><p>Throughout our studies (and particularly while working on the article), Prahalad was incredibly prompt and genuine. He demonstrated a strong grasp of the concepts, had a refined writing style (and created genuinely beautiful schematics), and contributed meaningfully to academic discussions. He was dedicated, reliable, and spared no opportunity to burn the midnight oil.</p><p>Having studied and worked alongside him, I can confidently recommend Prahalad as a capable, motivated, and collaborative individual. I wish him continued success in his academic and professional endeavours.</p></blockquote>
           <button class="rq-more" type="button" aria-expanded="false" aria-controls="rqf0">Read full recommendation</button>
           <figcaption class="rc-who">
@@ -1078,7 +1472,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
         </figure>
         <figure class="rq" role="tabpanel" id="rq1" aria-labelledby="rp1" hidden>
           <span class="rc-mark" aria-hidden="true">“</span>
-          <p class="rq-pull">His knowledge of fundamental molecular biology concepts as well as his expertise with computational biology and bioinformatics are exceptional.</p>
+          <p class="rq-pull">…his expertise with computational biology</p>
           <blockquote class="rq-full" id="rqf1"><p>I have had the pleasure of observing Prahlad's work firsthand during our time as students in VIT. i also had the opportunity to work alongside him during our project focused on the MULTIOMICS analysis of mutant Huntington protein. His knowledge of fundamental molecular biology concepts as well as his expertise with computational biology and bioinformatics are exceptional. He also possesses a strong work ethic and handles every undertaking with professionalism. I strongly recommend him to anyone looking for a candidate with a strong grasp on molecular and computational biology.</p></blockquote>
           <button class="rq-more" type="button" aria-expanded="false" aria-controls="rqf1">Read full recommendation</button>
           <figcaption class="rc-who">
@@ -1088,7 +1482,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
         </figure>
         <figure class="rq" role="tabpanel" id="rq2" aria-labelledby="rp2" hidden>
           <span class="rc-mark" aria-hidden="true">“</span>
-          <p class="rq-pull">Prahalad has a rare ability to blend technical rigor with great energy.</p>
+          <p class="rq-pull">…blend technical rigor with great energy</p>
           <blockquote class="rq-full" id="rqf2"><p>Working alongside Prahalad during our time at VIT Vellore was an incredible experience. We collaborated on a complex bioinformatics project involving multi-omics analysis, in silico drug design, and toxicity identification of the human huntingtin–HAP40 complex using BioPython.</p><p>Prahalad has a rare ability to blend technical rigor with great energy. He makes heavy workloads feel light, turns intense problem-solving into engaging brainstorming, and learns on the fly with remarkable speed. Whether diving deep into analytical challenges or chatting beyond work, Prahalad brings curiosity, sharp insight, and genuine fun to every interaction.</p></blockquote>
           <button class="rq-more" type="button" aria-expanded="false" aria-controls="rqf2">Read full recommendation</button>
           <figcaption class="rc-who">
@@ -1098,7 +1492,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
         </figure>
         <figure class="rq" role="tabpanel" id="rq3" aria-labelledby="rp3" hidden>
           <span class="rc-mark" aria-hidden="true">“</span>
-          <p class="rq-pull">That mix of computational skill and scientific scepticism is rare.</p>
+          <p class="rq-pull">…computational skill and scientific scepticism</p>
           <blockquote class="rq-full" id="rqf3"><p>Prahalad and I were roommates at VIT, so I saw the work long before the results. He treats a project as finished when it holds up, not when it is due, and his record shows it: a first-author paper in computer-aided drug design while still at VIT, a patent application for a multi-omics pipeline, and an MSc in Molecular Medicine with Distinction from Imperial College London. For his thesis, with LMU Munich, he compared blood transcriptomes of children with MIS-C and cats with FIP to see where two coronavirus-driven inflammatory diseases overlap and where they differ.</p><p>As someone in AI and data science at Frankfurt School, what I respect most is his judgement about tools. He works fluently in Python, R and AlphaFold-style models, yet he is the first to say that a prediction is not a validation. That mix of computational skill and scientific scepticism is rare.</p><p>Beyond the research, he looks after the people around him. He is generous with his time, quick to help anyone who is stuck, and the kind of person who makes sure everyone is okay. So it was no surprise that at Imperial he represented postgraduate students for the Faculty of Medicine and served as AI Program Representative for the Claude Builder Club. Any research group would gain a rigorous scientist who makes every team better.</p></blockquote>
           <button class="rq-more" type="button" aria-expanded="false" aria-controls="rqf3">Read full recommendation</button>
           <figcaption class="rc-who">
@@ -1108,7 +1502,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
         </figure>
         <figure class="rq" role="tabpanel" id="rq4" aria-labelledby="rp4" hidden>
           <span class="rc-mark" aria-hidden="true">“</span>
-          <p class="rq-pull">Any team or research lab would be lucky to have him!</p>
+          <p class="rq-pull">Any team or research lab would be lucky</p>
           <blockquote class="rq-full" id="rqf4"><p>I had the pleasure of knowing Prahalad during our time at Imperial College London, and I can say without hesitation that he is an outstanding biologist. Prahalad brings exceptional brilliance, deep dedication, and genuine enthusiasm to every project he undertakes. He excels at presenting complex ideas, engaged in thoughtful discussions, and is always open to feedback and new perspectives. Beyond his academic and research excellence, he is immensely collaborative frequently helping his peers and active in the broader community, including his work as a Claude AI programming representative. To top it off, he keeps team morale high with his signature humor and lighthearted jokes. Any team or research lab would be lucky to have him!</p></blockquote>
           <button class="rq-more" type="button" aria-expanded="false" aria-controls="rqf4">Read full recommendation</button>
           <figcaption class="rc-who">
@@ -1118,20 +1512,21 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
         </figure>
       </div>
     </div>
-    <p class="rc-source"><a href="https://www.linkedin.com/in/prahalad-computationalbiology/details/recommendations/">See all recommendations on LinkedIn ↗</a></p>
+    <p class="rc-source"><a href="https://www.linkedin.com/in/prahalad-krishnakumar/details/recommendations/">See all recommendations on LinkedIn ↗</a></p>
   </div>
 </section>
 
 <!-- ================= CONTACT ================= -->
 <section id="contact" class="contact">
+  <canvas class="netbg" id="netContact" aria-hidden="true"></canvas>
   <div class="wrap">
     <div>
     <h2>Contact</h2>
-    <p style="margin-top:8px">Mumbai, India </p>
-    <div class="row">
-      <a class="btn ghost" href="https://www.linkedin.com/in/prahalad-computationalbiology">LinkedIn</a>
-      <a class="btn ghost" href="https://orcid.org/0009-0003-1769-5902">ORCID</a>
-      <a class="btn ghost" href="https://scholar.google.com/citations?hl=en&amp;user=1g_hAOQAAAAJ">Google Scholar</a>
+    <div class="clinks">
+      <a class="clink" href="https://www.linkedin.com/in/prahalad-krishnakumar" target="_blank" rel="noopener"><b>LinkedIn ↗</b><span>in/prahalad-krishnakumar</span></a>
+      <a class="clink" href="https://orcid.org/0009-0003-1769-5902" target="_blank" rel="noopener"><b>ORCID ↗</b><span>0009-0003-1769-5902</span></a>
+      <a class="clink" href="https://scholar.google.com/citations?hl=en&amp;user=1g_hAOQAAAAJ" target="_blank" rel="noopener"><b>Google Scholar ↗</b><span>Publications and citations</span></a>
+      <a class="clink" href="https://github.com/PrahaladKrishnakumar" target="_blank" rel="noopener"><b>GitHub ↗</b><span>PrahaladKrishnakumar</span></a>
     </div>
     </div>
     <canvas id="helix" aria-hidden="true"></canvas>
@@ -1142,8 +1537,10 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
 <div class="pm" id="pm" role="dialog" aria-modal="true" aria-labelledby="pmTitle" aria-hidden="true">
   <div class="pm-card" id="pmCard">
     <button class="pm-close" type="button" id="pmClose" aria-label="Close">✕</button>
+    <div class="pm-scroll" id="pmScroll">
     <div class="pm-body" id="pmBody"></div>
     <div class="pm-nav"><button type="button" id="pmPrev">← Previous</button><span class="pm-pos" id="pmPos"></span><button type="button" id="pmNext">Next →</button></div>
+    </div>
   </div>
 </div>
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer" aria-hidden="true">
@@ -1170,35 +1567,69 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
   document.querySelectorAll('[data-cite]').forEach(function(b){b.addEventListener('click',function(){
     var c=b.closest('.pub').querySelector('.cite').textContent.replace(/\s+/g,' ').trim(); copy(c,'Citation copied');})});
 
-  /* ---------- hero gene-network canvas ---------- */
-  var cv=document.getElementById('net'), ctx=cv.getContext('2d'), nodes=[], W=0, H=0, dpr=Math.min(window.devicePixelRatio||1,2);
-  function size(){
-    var r=cv.getBoundingClientRect(); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
-    var n=Math.round(Math.min(90,Math.max(36,W*H/9000))); nodes=[];
-    for(var i=0;i<n;i++){nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,r:1.5+Math.random()*2.2,c:Math.random()<.22});}
-  }
-  var mouse={x:-999,y:-999};
-  cv.parentElement.addEventListener('pointermove',function(e){var r=cv.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});
-  cv.parentElement.addEventListener('pointerleave',function(){mouse.x=mouse.y=-999;});
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    for(var i=0;i<nodes.length;i++){
-      var a=nodes[i];
-      for(var j=i+1;j<nodes.length;j++){
-        var b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=dx*dx+dy*dy;
-        if(d<13000){ctx.strokeStyle='rgba(255,255,255,'+(0.2*(1-d/13000))+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
-      }
-      var md=(a.x-mouse.x)*(a.x-mouse.x)+(a.y-mouse.y)*(a.y-mouse.y);
-      if(md<22000){ctx.strokeStyle='rgba(255,200,120,'+(0.55*(1-md/22000))+')';ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(mouse.x,mouse.y);ctx.stroke();}
+  /* ---------- interactive dot network: hero, recommendations, contact ---------- */
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  function makeNet(cv,o){
+    if(!cv)return null;
+    var ctx=cv.getContext('2d'), nodes=[], W=0, H=0, raf=0, live=false, mouse={x:-999,y:-999},
+        host=o.host||cv.parentElement, dense=o.dense||9000,
+        D=o.dist||13000, MD=o.cursorDist||22000;
+    function size(){
+      var r=cv.getBoundingClientRect(); if(!r.width||!r.height)return;
+      W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+      var n=Math.round(Math.min(o.max||90,Math.max(o.min||30,W*H/dense))); nodes=[];
+      for(var i=0;i<n;i++)nodes.push({x:Math.random()*W,y:Math.random()*H,
+        vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,
+        r:(o.r||1.5)+Math.random()*(o.rJit||2.2),c:Math.random()<(o.accentShare||0.22)});
     }
-    for(var k=0;k<nodes.length;k++){var p=nodes[k];ctx.fillStyle=p.c?'rgba(255,190,110,.95)':'rgba(255,255,255,.85)';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill();}
+    host.addEventListener('pointermove',function(e){var r=cv.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});
+    host.addEventListener('pointerleave',function(){mouse.x=mouse.y=-999;});
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      for(var i=0;i<nodes.length;i++){
+        var a=nodes[i];
+        for(var j=i+1;j<nodes.length;j++){
+          var b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=dx*dx+dy*dy;
+          if(d<D){ctx.strokeStyle=o.link(1-d/D);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+        }
+        var md=(a.x-mouse.x)*(a.x-mouse.x)+(a.y-mouse.y)*(a.y-mouse.y);
+        if(md<MD){ctx.strokeStyle=o.cursor(1-md/MD);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(mouse.x,mouse.y);ctx.stroke();}
+      }
+      for(var k=0;k<nodes.length;k++){var p=nodes[k];ctx.fillStyle=p.c?o.accent:o.dot;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill();}
+    }
+    function step(){
+      for(var i=0;i<nodes.length;i++){var p=nodes[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;}
+      draw(); if(live)raf=requestAnimationFrame(step);
+    }
+    var api={resize:function(){size();draw();},
+      start:function(){if(live||reduce)return;live=true;raf=requestAnimationFrame(step);},
+      stop:function(){live=false;if(raf)cancelAnimationFrame(raf);raf=0;}};
+    size(); draw();
+    /* each field runs only while it is on screen */
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?api.start():api.stop();})},{threshold:0}).observe(cv);
+    } else api.start();
+    return api;
   }
-  function step(){
-    for(var i=0;i<nodes.length;i++){var p=nodes[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;}
-    draw(); if(!reduce) requestAnimationFrame(step);
-  }
-  size(); step();
-  var rt; window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){size();if(reduce)draw();},150)});
+  var nets=[
+    makeNet(document.getElementById('net'),{
+      link:function(f){return 'rgba(255,255,255,'+(0.2*f)+')'},
+      cursor:function(f){return 'rgba(255,200,120,'+(0.55*f)+')'},
+      dot:'rgba(255,255,255,.85)', accent:'rgba(255,190,110,.95)', min:36}),
+    makeNet(document.getElementById('netRec'),{
+      host:document.getElementById('recommendations'),
+      link:function(f){return 'rgba(0,78,165,'+(0.1*f)+')'},
+      cursor:function(f){return 'rgba(224,138,30,'+(0.38*f)+')'},
+      dot:'rgba(0,78,165,.26)', accent:'rgba(224,138,30,.4)',
+      dense:17000, max:52, r:1.3, rJit:1.7, dist:16000}),
+    makeNet(document.getElementById('netContact'),{
+      host:document.getElementById('contact'),
+      link:function(f){return 'rgba(255,255,255,'+(0.14*f)+')'},
+      cursor:function(f){return 'rgba(255,210,150,'+(0.5*f)+')'},
+      dot:'rgba(255,255,255,.55)', accent:'rgba(255,200,130,.75)',
+      dense:14000, max:60, r:1.3, rJit:1.9})
+  ];
+  var netRt; window.addEventListener('resize',function(){clearTimeout(netRt);netRt=setTimeout(function(){nets.forEach(function(n){if(n)n.resize()})},150)});
 
   /* ---------- reveal animations (content is visible at rest; JS replays on view) ---------- */
   function countUp(el){
@@ -1286,7 +1717,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
   var fbtn=[].slice.call(document.querySelectorAll('.filters button')), projs=[].slice.call(document.querySelectorAll('.proj'));
   fbtn.forEach(function(b){b.addEventListener('click',function(){
     var f=b.getAttribute('data-f'); fbtn.forEach(function(x){x.setAttribute('aria-pressed',x===b)});
-    var k=0; projs.forEach(function(p){var show=(f==='all'||p.getAttribute('data-tags')===f);p.classList.toggle('hide',!show);p.classList.remove('enter');if(show&&!reduce){void p.offsetWidth;p.style.animationDelay=(k++*60)+'ms';p.classList.add('enter');}});
+    var k=0; projs.forEach(function(p){var show=(f==='all'||(' '+p.getAttribute('data-tags')+' ').indexOf(' '+f+' ')>-1);p.classList.toggle('hide',!show);p.classList.remove('enter');if(show&&!reduce){void p.offsetWidth;p.style.animationDelay=(k++*60)+'ms';p.classList.add('enter');}});
   })});
   fbtn[0].textContent='All ('+projs.length+')';
   /* ---------- project pop-out: the card grows into a centred panel ---------- */
@@ -1297,13 +1728,13 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
     var more=card.querySelector('.more-in'), paras=card.querySelectorAll(':scope > p:not(.meta)');
     pmBody.innerHTML=card.querySelector('.meta').outerHTML+
       '<h3 id="pmTitle">'+card.querySelector('h3').innerHTML+'</h3>'+
-      '<p class="lead">'+(paras[0]?paras[0].innerHTML:'')+'</p>'+
       card.querySelector('.tags').outerHTML+
+      '<div class="pp"><p class="pl">Investigation question</p><p class="lead">'+(paras[0]?paras[0].innerHTML:'')+'</p></div>'+
       '<div class="detail">'+(more?more.innerHTML:'')+'</div>';
     pmCards=pmList(); pmAt=pmCards.indexOf(card);
     pmPos.textContent=(pmAt+1)+' / '+pmCards.length;
     if(!reduce)growBars(pmBody);
-    pmCard.scrollTop=0;
+    var sc=document.getElementById('pmScroll'); if(sc)sc.scrollTop=0;
   }
   function pmOpen(card){
     pmFrom=card; pmFill(card);
@@ -1361,6 +1792,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
   /* ---------- timeline: pinned rotating helix + milestone list ---------- */
   var T=[
     {d:'2021',k:'study',h:'I started my B.Tech in Biotechnology',b:'At Vellore Institute of Technology, India. I finished with a CGPA of 8.75/10 (WES-calculated GPA 3.97/4).'},
+    {d:'Sep 2023',k:'study',h:'I worked in a hospital laboratory',b:'A credit-bearing placement in transplant immunology at Jaslok Hospital, Mumbai. HLA typing, crossmatches and antibody monitoring, where the result decided whether a transplant could go ahead.'},
     {d:'Oct 2023',k:'study',h:'I led my first research project',b:'At BPRI, Noida, I studied c-KIT, the driver kinase in gastrointestinal stromal tumour, with structural analysis and sunitinib docking.'},
     {d:'Feb 2024',k:'award',h:'I published my first paper',b:'The c-KIT work became my first-author paper in JETIR, written with Dr Uma Kumari.'},
     {d:'Jul 2024',k:'study',h:'I asked which chaperone binds Tau best',b:'For my undergraduate thesis, I compared archaeal, human and <i>E. coli</i> chaperones by docking, with Dr C. Sudandiradoss as my supervisor.'},
@@ -1371,7 +1803,8 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
     {d:'Jan 2026',k:'award',h:'Our Tau paper won Best Paper',b:'At the international One Health conference in Assam. I share the award with my co-author, M. Bora.'},
     {d:'Mar 2026',k:'award',h:'My three-year review was published, and my thesis began',b:'I started drafting the E3 ligase review in May 2023. After rounds of peer review, it was published in <i>Frontiers in Molecular Biosciences</i>. I made all of its figures. The same month, I began my MSc thesis on MIS-C and FIP.'},
     {d:'Jun 2026',k:'study',h:'I presented my thesis',b:'At the MSc Molecular Medicine poster session, and in July as a student speaker at Imperial\'s Master\'s Symposium.'},
-    {d:'Sep 2026',k:'award',h:'I finished my MSc with Distinction',b:'I submitted my thesis on 1 September and defended it in my viva. I received a Distinction for the thesis and for the degree.'}
+    {d:'Sep 2026',k:'award',h:'I finished my MSc with Distinction',b:'I submitted my thesis on 1 September and defended it in my viva. I received a Distinction for the thesis and for the degree.'},
+    {d:'Nov 2026',k:'study',h:'I started building an AI/ML framework for lung cancer',b:'Back at BPRI with Dr Uma Kumari, linking transcriptomic biomarker discovery, kinase drug-interaction modelling and protein language models into one framework for non-small cell lung cancer.'}
   ];
   var flow=document.getElementById('flow'), list=document.getElementById('flowList'), items=[],
       hxDate=document.getElementById('hxDate'),
@@ -1404,11 +1837,36 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
     var f=y/HH; var c=f<0.6?mix(BLUE,MID,f/0.6):mix(MID,ORANGE,(f-0.6)/0.4);
     return c;
   }
+  /* bases: a fixed pseudo-random strand, so the sequence never shimmers between frames.
+     The second strand is the complement, as it must be. */
+  var BASES=['A','T','C','G'], COMP={A:'T',T:'A',C:'G',G:'C'},
+      BASECOL={A:[0,52,110],T:[0,113,227],C:[94,163,239],G:[224,138,30]};
+  function baseAt(i){ /* murmur-style finalizer: even spread, no long runs */
+    var x=((i+1)*2654435761)>>>0;
+    x^=x>>>15; x=Math.imul(x,2246822519)>>>0;
+    x^=x>>>13; x=Math.imul(x,3266489917)>>>0;
+    x^=x>>>16; return BASES[x&3];
+  }
+  function drawBase(x,y,z,b,on,narrow){
+    var d=(z+1)/2, r=(narrow?1.6:3.2)+(narrow?1.2:3.1)*d, c=BASECOL[b];
+    hctx.globalAlpha=on?(0.45+0.5*d):(0.3+0.25*d);
+    hctx.fillStyle=on?'rgb('+c.join(',')+')':'rgb(224,235,247)';
+    hctx.beginPath(); hctx.arc(x,y,r,0,Math.PI*2); hctx.fill();
+    /* a thin light ring, so a navy base still reads against the navy backbone */
+    hctx.globalAlpha=on?(0.5+0.4*d):0.3; hctx.lineWidth=narrow?0.8:1.3;
+    hctx.strokeStyle='#fff'; hctx.stroke();
+    if(!narrow && on && z>=0 && r>=5){
+      hctx.globalAlpha=0.96; hctx.fillStyle='#fff';
+      hctx.font='700 '+Math.round(r*1.15)+'px ui-monospace,SFMono-Regular,Menlo,monospace';
+      hctx.textAlign='center'; hctx.textBaseline='middle';
+      hctx.fillText(b,x,y+0.5);
+    }
+  }
   function drawHelix(){
     if(!HH)return;
     hctx.clearRect(0,0,HW,HH);
     var narrow=HW<120, R=narrow?Math.min(16,HW*0.3):Math.min(72,HW*0.28), cx=HW/2, pad=10,
-        pitch=R*2*1.7, y0=pad, y1=HH-pad, fillY=y0+(y1-y0)*prog, step=2, segs=[];
+        pitch=R*2*1.7, y0=pad, y1=HH-pad, fillY=y0+(y1-y0)*prog, step=2, segs=[], pend=[];
     /* backbone segments with depth */
     for(var s=0;s<2;s++){
       var off=s?GROOVE:0, prev=null;
@@ -1422,7 +1880,7 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
     var bps=[], bpStep=pitch/BP_PER_TURN;
     for(var yb=y0+bpStep/2;yb<y1;yb+=bpStep){
       var t1=2*Math.PI*(yb-y0)/pitch+phi, t2=t1+GROOVE;
-      bps.push({y:yb,xa:cx+R*Math.sin(t1),xb:cx+R*Math.sin(t2),z:(Math.cos(t1)+Math.cos(t2))/2});
+      bps.push({y:yb,xa:cx+R*Math.sin(t1),xb:cx+R*Math.sin(t2),za:Math.cos(t1),zb:Math.cos(t2),z:(Math.cos(t1)+Math.cos(t2))/2});
     }
     function drawSegs(front){
       segs.forEach(function(g){
@@ -1443,8 +1901,14 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
       hctx.beginPath(); hctx.moveTo(p.xa,p.y); hctx.lineTo(mx,p.y); hctx.stroke();
       hctx.strokeStyle=on?(late?'#B5D6FA':(i%2?'#A9CFF5':'#93C2F2')):'#ECF2F9';
       hctx.beginPath(); hctx.moveTo(mx,p.y); hctx.lineTo(p.xb,p.y); hctx.stroke();
+      var bl=baseAt(i);
+      pend.push([p.xa,p.y,p.za,bl,on],[p.xb,p.y,p.zb,COMP[bl],on]);
     });
     drawSegs(true);
+    /* bases last: they attach to the backbone, so they read wrong underneath it.
+       Back-facing first, so the near side overlaps the far side. */
+    pend.sort(function(a,b){return a[2]-b[2]});
+    pend.forEach(function(q){drawBase(q[0]+(cx-q[0])*0.08,q[1],q[2],q[3],q[4],narrow)});
     hctx.globalAlpha=1;
   }
   function flowTick(){
@@ -1465,12 +1929,28 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
     hxDate.textContent=T[cur].d; hxDate.style.color=gradAt(items[cur]?(items[cur].getBoundingClientRect().top+30-lt.top)/lh:0,true);
     if(reduce||!spinning)drawHelix();
   }
-  var spinning=false, lastT=0;
+  var spinning=false, lastT=0, inView=false, hxOver=false, hxHeld=false, hxLastX=null;
   function spin(ts){ if(!spinning)return; if(lastT)phi+=(ts-lastT)/1000*(2*Math.PI/10); lastT=ts; drawHelix(); requestAnimationFrame(spin); }
-  if(!reduce && 'IntersectionObserver' in window){
+  function hxResume(){ if(reduce||hxOver||hxHeld||!inView||spinning)return; spinning=true; lastT=0; requestAnimationFrame(spin); }
+  if('IntersectionObserver' in window){
     new IntersectionObserver(function(es){es.forEach(function(e){
-      if(e.isIntersecting&&!spinning){spinning=true;lastT=0;requestAnimationFrame(spin);} else if(!e.isIntersecting){spinning=false;}
+      inView=e.isIntersecting;
+      if(inView)hxResume(); else spinning=false;
     })}).observe(flow);
+  }
+  /* the helix is a toy as well as a decoration: hold the cursor on it to stop
+     the spin, then move left or right to turn it by hand. */
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+    var hxHint=document.getElementById('hxHint');
+    function hxTurn(e){
+      if(hxLastX!==null){ phi-=(e.clientX-hxLastX)*0.012; drawHelix(); if(hxHint)hxHint.classList.add('gone'); }
+      hxLastX=e.clientX;
+    }
+    cv2.addEventListener('pointerenter',function(e){ hxOver=true; spinning=false; hxLastX=e.clientX; });
+    cv2.addEventListener('pointermove',function(e){ if(hxOver||hxHeld)hxTurn(e); });
+    cv2.addEventListener('pointerleave',function(){ hxOver=false; if(!hxHeld){hxLastX=null;hxResume();} });
+    cv2.addEventListener('pointerdown',function(e){ hxHeld=true; hxLastX=e.clientX; try{cv2.setPointerCapture(e.pointerId);}catch(_){} e.preventDefault(); });
+    window.addEventListener('pointerup',function(){ if(!hxHeld)return; hxHeld=false; if(!hxOver){hxLastX=null;hxResume();} });
   }
   var fRaf=0; window.addEventListener('scroll',function(){if(fRaf)return;fRaf=requestAnimationFrame(function(){fRaf=0;flowTick();});},{passive:true});
   var fRt; window.addEventListener('resize',function(){clearTimeout(fRt);fRt=setTimeout(buildPath,120)});
@@ -1491,7 +1971,50 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
   top.addEventListener('click',function(){window.scrollTo({top:0,behavior:reduce?'auto':'smooth'})});
 
   /* scroll reveal: only for things below the first screen, so the first frame is complete */
-  document.querySelectorAll('.sg .chips-inline').forEach(function(g){[].forEach.call(g.children,function(c,i){c.style.setProperty('--i',i)})});
+  var chipVec=[];
+  document.querySelectorAll('.sg .chips-inline').forEach(function(g){[].forEach.call(g.children,function(c,i){
+    c.style.setProperty('--i',i);
+    /* one fixed scatter vector per chip, so the motion is stable between passes */
+    var a=Math.random()*Math.PI*2, d=16+Math.random()*34,
+        dx=Math.cos(a)*d, dy=Math.sin(a)*d, rot=(Math.random()-0.5)*26;
+    c.style.setProperty('--dx',dx.toFixed(1)+'px');
+    c.style.setProperty('--dy',dy.toFixed(1)+'px');
+    c.style.setProperty('--rot',rot.toFixed(1)+'deg');
+    chipVec.push({el:c,dx:dx,dy:dy,rot:rot});
+  })});
+
+  /* Scroll-driven animations became Baseline only in October 2026, so a reader on an
+     older Firefox or Safari would see nothing. Where the CSS timeline is missing, drive
+     the same scatter from JavaScript: same vectors, same shape, one rAF per scroll,
+     and only while the section is on screen. */
+  (function(){
+    var sg=document.getElementById('skills');
+    if(reduce||!sg||!chipVec.length)return;
+    if(window.CSS&&CSS.supports&&CSS.supports('animation-timeline','view()'))return;
+    sg.classList.add('js-scatter');
+    var on=false, raf=0;
+    function paint(){
+      raf=0;
+      var vh=window.innerHeight;
+      for(var i=0;i<chipVec.length;i++){
+        var v=chipVec[i], r=v.el.getBoundingClientRect(), hgt=r.height||1, k;
+        var p=Math.min(1,Math.max(0,(vh-r.top)/hgt));      /* entry: 0 .. 1 */
+        var q=Math.min(1,Math.max(0,(-r.top)/hgt));        /* exit:  0 .. 1 */
+        k=q>0?-q:(1-p);
+        var amt=Math.abs(k), s=k>=0?1:-1;
+        if(amt<0.002){v.el.style.opacity='';v.el.style.transform='';continue;}
+        v.el.style.opacity=(1-amt).toFixed(3);
+        v.el.style.transform='translate3d('+(v.dx*amt*s).toFixed(1)+'px,'+(v.dy*amt*s).toFixed(1)+'px,0) scale('+(1-0.4*amt).toFixed(3)+') rotate('+(v.rot*amt*s).toFixed(1)+'deg)';
+      }
+    }
+    function ask(){ if(on&&!raf)raf=requestAnimationFrame(paint); }
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){es.forEach(function(e){on=e.isIntersecting;ask();})},{threshold:0}).observe(sg);
+    } else { on=true; }
+    window.addEventListener('scroll',ask,{passive:true});
+    window.addEventListener('resize',ask);
+    ask();
+  })();
   if(!reduce && 'IntersectionObserver' in window){
     var rvSel='.sec-head,.explorer,.proj,.pub,.sg,.talk,.filters,.contact .wrap > div,.g-row';
     var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target);}})},{threshold:.12,rootMargin:'0px 0px -6% 0px'});
@@ -1533,6 +2056,22 @@ section.alt{background-color:var(--tint);background-image:linear-gradient(to rig
   hsize(); if(reduce)hdraw(); else hloop();
   window.addEventListener('resize',function(){hsize();if(reduce)hdraw();});
 
+
+  /* ---------- ligand plot: delegated, so the same markup works inside the pop-out ---------- */
+  var LIG=[
+    'Strongest predicted binding of the four, but returned active for cytotoxicity (p = 0.98) — the highest toxicity call in the set.',
+    'Second strongest predicted binding. Highly lipophilic (logP 7.53), with mitochondrial membrane potential and GABA receptor flags.',
+    'Predicted active for neurotoxicity (p = 0.56), which rules it out for a target needing chronic dosing in the brain.',
+    'Weakest predicted binding of the four, 1.6 kcal/mol behind withanolide D — and the only ligand returned inactive for both neurotoxicity (p = 0.90) and cytotoxicity (p = 0.84). Lowest lipophilicity of the series (logP 1.25; TPSA 130.61 Å²). This is the one I took forward.'
+  ];
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('.lig-b'); if(!b)return;
+    e.stopPropagation();                      /* do not let the card open the pop-out */
+    var box=b.closest('[data-lig]'), i=+b.getAttribute('data-l');
+    box.querySelectorAll('.lig-b').forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+    var d=box.querySelector('[data-det]'); d.textContent=LIG[i];
+    d.style.animation='none'; void d.offsetWidth; d.style.animation='';
+  });
 
   /* ---------- gallery lightbox ---------- */
   var shots=[].slice.call(document.querySelectorAll('[data-lb]')), lb=document.getElementById('lb'),
